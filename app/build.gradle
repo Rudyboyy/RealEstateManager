@@ -1,0 +1,68 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 33
+    defaultConfig {
+        applicationId "com.openclassrooms.realestatemanager"
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    //MATERIAL DESIGN GOOGLE
+    implementation 'com.google.android.material:material:1.8.0'
+    //GSON GOOGLE
+    implementation 'com.google.code.gson:gson:2.9.1'
+
+
+//    //MOCKITO
+//    androidTestImplementation 'org.mockito:mockito-core:4.6.1'
+//    testImplementation 'org.mockito:mockito-core:4.6.1'
+//    implementation 'org.mockito:mockito-android:3.7.0'
+//
+//    implementation 'androidx.multidex:multidex:2.0.1'
+//
+//    //GLIDE
+//    implementation 'com.github.bumptech.glide:glide:4.13.2'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+//
+//    //LIVEDATA & VIEW MODEL
+//    implementation "androidx.lifecycle:lifecycle-livedata:2.6.1"
+//    implementation "androidx.lifecycle:lifecycle-viewmodel:2.6.1"
+//
+//    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+//    implementation 'com.google.android.gms:play-services-location:21.0.1'
+//
+//    //RETROFIT
+//    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+//    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+//    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+    //CARDVIEW
+    implementation 'androidx.cardview:cardview:1.0.0'
+}
