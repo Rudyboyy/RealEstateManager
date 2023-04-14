@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.databinding.RealEstateItemBinding
-import com.openclassrooms.realestatemanager.model.RealEstate
+import com.openclassrooms.realestatemanager.model.Property
 
-class RealEstatesAdapter :
-    ListAdapter<RealEstate, RealEstatesAdapter.ViewHolder>(RealEstatesDiffCallback) {
+class PropertiesAdapter :
+    ListAdapter<Property, PropertiesAdapter.ViewHolder>(RealEstatesDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
         RealEstateItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,16 +21,16 @@ class RealEstatesAdapter :
 
     class ViewHolder(private val binding: RealEstateItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: RealEstate) {
+        fun bind(item: Property) {
             binding.realEstateItemTextView.text = item.propertyType
         }
     }
 
-    object RealEstatesDiffCallback : DiffUtil.ItemCallback<RealEstate>() {
-        override fun areItemsTheSame(oldItem: RealEstate, newItem: RealEstate): Boolean =
+    object RealEstatesDiffCallback : DiffUtil.ItemCallback<Property>() {
+        override fun areItemsTheSame(oldItem: Property, newItem: Property): Boolean =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: RealEstate, newItem: RealEstate): Boolean =
+        override fun areContentsTheSame(oldItem: Property, newItem: Property): Boolean =
             oldItem == newItem
     }
 }

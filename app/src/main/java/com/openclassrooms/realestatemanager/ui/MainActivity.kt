@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.openclassrooms.realestatemanager.databinding.MainActivityBinding
-import com.openclassrooms.realestatemanager.ui.real_estate.RealEstatesListFragment
+import com.openclassrooms.realestatemanager.ui.real_estate.PropertiesListFragment
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.MainViewModel
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(
                     binding.mainFrameLayoutContainerRealEstate.id,
-                    RealEstatesListFragment.newInstance()
+                    PropertiesListFragment.newInstance()
                 )
                 .commitNow()
         }

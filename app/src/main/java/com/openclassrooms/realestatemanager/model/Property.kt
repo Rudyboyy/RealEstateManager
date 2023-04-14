@@ -2,11 +2,10 @@ package com.openclassrooms.realestatemanager.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "realEstate")
-data class RealEstate(
+data class Property(
     @PrimaryKey(autoGenerate = true)
 //    @ColumnInfo(name = "property_id")
      val id: Int,

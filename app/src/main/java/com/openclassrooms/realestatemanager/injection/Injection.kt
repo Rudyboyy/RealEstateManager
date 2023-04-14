@@ -8,12 +8,12 @@ import java.util.concurrent.Executors
 
 object Injection {
 
-    fun provideRealEstateRepository(context: Context): RealEstateRepository {
+    private fun provideRealEstateRepository(context: Context): RealEstateRepository {
         val database = AppDatabase.getDatabase(context)
         return RealEstateRepository(database.realEstateDao())
     }
 
-    fun provideExecutor(): Executor = Executors.newSingleThreadExecutor()
+    private fun provideExecutor(): Executor = Executors.newSingleThreadExecutor()
 
     fun provideViewModelFactory(context: Context): ViewModelFactory {
         val realEstateRepository = provideRealEstateRepository(context)

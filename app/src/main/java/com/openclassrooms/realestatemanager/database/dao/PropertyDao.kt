@@ -1,21 +1,21 @@
 package com.openclassrooms.realestatemanager.database.dao
 
 import androidx.room.*
-import com.openclassrooms.realestatemanager.model.RealEstate
+import com.openclassrooms.realestatemanager.model.Property
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RealEstateDao {
+interface PropertyDao {
 
     @Query("SELECT * FROM realEstate")
-    fun getAllRealEstates(): Flow<List<RealEstate>>
+    fun getAllProperties(): Flow<List<Property>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(property: RealEstate): Long
+    suspend fun insert(property: Property): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAll(realEstates: List<RealEstate>)
+    fun insertAll(properties: List<Property>)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(realEstate: RealEstate): Int
+    suspend fun update(property: Property): Int
 }

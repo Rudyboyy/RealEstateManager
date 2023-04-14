@@ -1,18 +1,18 @@
 package com.openclassrooms.realestatemanager.repository
 
-import com.openclassrooms.realestatemanager.database.dao.RealEstateDao
-import com.openclassrooms.realestatemanager.model.RealEstate
+import com.openclassrooms.realestatemanager.database.dao.PropertyDao
+import com.openclassrooms.realestatemanager.model.Property
 import kotlinx.coroutines.flow.Flow
 
-class RealEstateRepository(private val realEstateDao: RealEstateDao) {
+class RealEstateRepository(private val propertyDao: PropertyDao) {
 
-    val allProperties: Flow<List<RealEstate>> = realEstateDao.getAllRealEstates()
+    val allProperties: Flow<List<Property>> = propertyDao.getAllProperties()
 
-    suspend fun invoke(realEstateEntity: RealEstate) {
-        realEstateDao.insert(realEstateEntity)
+    suspend fun invoke(propertyEntity: Property) {
+        propertyDao.insert(propertyEntity)
     }
 
-    suspend fun update(realEstate: RealEstate): Int {
-        return realEstateDao.update(realEstate)
+    suspend fun update(property: Property): Int {
+        return propertyDao.update(property)
     }
 }
