@@ -1,5 +1,7 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -10,7 +12,14 @@ android {
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.incremental"] = "true"
+            }
+        }
     }
 
     buildFeatures {
@@ -24,45 +33,39 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.core:core-ktx:1.10.0"
+    implementation "androidx.fragment:fragment-ktx:1.5.6"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Room components
+    kapt "androidx.room:room-compiler:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // Lifecycle components
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    // TEST
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
-    //MATERIAL DESIGN GOOGLE
-    implementation 'com.google.android.material:material:1.8.0'
-    //GSON GOOGLE
-    implementation 'com.google.code.gson:gson:2.9.1'
-
-
-//    //MOCKITO
-//    androidTestImplementation 'org.mockito:mockito-core:4.6.1'
-//    testImplementation 'org.mockito:mockito-core:4.6.1'
-//    implementation 'org.mockito:mockito-android:3.7.0'
-//
-//    implementation 'androidx.multidex:multidex:2.0.1'
-//
-//    //GLIDE
-//    implementation 'com.github.bumptech.glide:glide:4.13.2'
-//    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
-//
-//    //LIVEDATA & VIEW MODEL
-//    implementation "androidx.lifecycle:lifecycle-livedata:2.6.1"
-//    implementation "androidx.lifecycle:lifecycle-viewmodel:2.6.1"
-//
-//    implementation 'com.google.android.gms:play-services-maps:18.1.0'
-//    implementation 'com.google.android.gms:play-services-location:21.0.1'
-//
-//    //RETROFIT
-//    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-//    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-//    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-
-    //CARDVIEW
-    implementation 'androidx.cardview:cardview:1.0.0'
 }
