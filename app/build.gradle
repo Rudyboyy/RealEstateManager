@@ -64,6 +64,9 @@ dependencies {
     // Lifecycle components
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
+    //Sliding Pane Layout
+    implementation("androidx.slidingpanelayout:slidingpanelayout:1.2.0")
+
     // TEST
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
