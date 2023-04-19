@@ -8,21 +8,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.databinding.RealEstateItemBinding
 import com.openclassrooms.realestatemanager.model.Property
 
-class PropertiesAdapter :
-    ListAdapter<Property, PropertiesAdapter.ViewHolder>(RealEstatesDiffCallback) {
+class PropertyAdapter(private val onItemClicked: (Property) -> Unit) :
+    ListAdapter<Property, PropertyAdapter.ViewHolder>(RealEstatesDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
         RealEstateItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val property = getItem(position)
+        holder.itemView.setOnClickListener {
+            onItemClicked(property)
+        }
+        holder.bind(property)
     }
 
     class ViewHolder(private val binding: RealEstateItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Property) {
-            binding.realEstateItemTextView.text = item.propertyType
+            binding.propertyType.text = item.propertyType
         }
     }
 

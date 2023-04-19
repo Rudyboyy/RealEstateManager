@@ -17,5 +17,5 @@ interface PropertyDao {
     fun insertAll(properties: List<Property>)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(property: Property): Int
+    suspend fun update(property: Property)
 }
