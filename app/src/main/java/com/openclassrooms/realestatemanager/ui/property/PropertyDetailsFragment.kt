@@ -20,7 +20,7 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.selectedProperty.observe(this.viewLifecycleOwner) {
-            binding.propertyType.text = it.propertyType
+            binding.propertyType.text = it.type
         }
     }
 }
