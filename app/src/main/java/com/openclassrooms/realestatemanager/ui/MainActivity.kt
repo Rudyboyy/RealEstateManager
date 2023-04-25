@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         initDrawerLayout()
         initNavigationView()
-        setupHeaderView()
     }
 
     private fun initDrawerLayout() {
