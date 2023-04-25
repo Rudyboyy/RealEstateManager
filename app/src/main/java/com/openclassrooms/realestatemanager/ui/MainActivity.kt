@@ -70,9 +70,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun setupHeaderView() {
-        // Configuration du header de la NavigationView
-//        val headerView = navView.getHeaderView(0)
-    }
 }

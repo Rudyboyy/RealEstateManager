@@ -6,4 +6,9 @@
     <!-- Used in NavigationDrawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="loan_calculator">Loan calculator</string>
+    <string name="new_property">New property</string>
+    <string name="map">Map</string>
+    <string name="icon">icon</string>
 </resources>
