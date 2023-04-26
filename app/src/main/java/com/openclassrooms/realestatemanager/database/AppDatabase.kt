@@ -4,14 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.openclassrooms.realestatemanager.database.dao.PropertyDao
 import com.openclassrooms.realestatemanager.model.Property
+import com.openclassrooms.realestatemanager.utils.Converters
 import com.openclassrooms.realestatemanager.utils.DummyRealEstateProvider
+import com.openclassrooms.realestatemanager.utils.PhotoListConverter
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @Database(entities = [Property::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class, PhotoListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun realEstateDao(): PropertyDao

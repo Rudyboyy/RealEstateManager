@@ -3,7 +3,7 @@ package com.openclassrooms.realestatemanager.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.threeten.bp.LocalDate
+import java.util.*
 
 @Entity(tableName = "realEstate")
 data class Property(
@@ -24,15 +24,23 @@ data class Property(
     val status: PropertyStatus,
     @ColumnInfo(name = "number_of_rooms")
     val numberOfRooms: Int,
+    @ColumnInfo(name = "number_of_bedrooms")
+    val numberOfBedrooms: Int,
+    @ColumnInfo(name = "number_of_bathrooms")
+    val numberOfBathrooms: Int,
     @ColumnInfo(name = "surface")
     val surface: Double,
     @ColumnInfo(name = "point_of_interest")
     val pointOfInterest: String,
     @ColumnInfo(name = "entry_date")
-    val entryDate: LocalDate,
+    val entryDate: Date,
     @ColumnInfo(name = "sale_date")
-    val saleDate: LocalDate? = null,
+    val saleDate: Date? = null,
     @ColumnInfo(name = "photos")
     val photos: List<Photo>,
+    @ColumnInfo(name = "latitude")
+    val latitude: Double?,
+    @ColumnInfo(name = "longitude")
+    val longitude: Double?,
 )
 
