@@ -3,14 +3,44 @@ package com.openclassrooms.realestatemanager.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "realEstate")
 data class Property(
     @PrimaryKey(autoGenerate = true)
-//    @ColumnInfo(name = "property_id")
-     val id: Int,
-//    @ColumnInfo(index = true) val userId: Long,
-    @ColumnInfo(name = "property_type") val propertyType: String
-//    val price: Double,
-//    val address: String,
+    @ColumnInfo(name = "property_id")
+    val id: Int,
+    @ColumnInfo(name = "agent")
+    val agent: String,
+    @ColumnInfo(name = "type")
+    val type: String,
+    @ColumnInfo(name = "price")
+    val price: Double,
+    @ColumnInfo(name = "description")
+    val description: String,
+    @ColumnInfo(name = "address")
+    val address: String,
+    @ColumnInfo(name = "status")
+    val status: PropertyStatus,
+    @ColumnInfo(name = "number_of_rooms")
+    val numberOfRooms: Int,
+    @ColumnInfo(name = "number_of_bedrooms")
+    val numberOfBedrooms: Int,
+    @ColumnInfo(name = "number_of_bathrooms")
+    val numberOfBathrooms: Int,
+    @ColumnInfo(name = "surface")
+    val surface: Double,
+    @ColumnInfo(name = "point_of_interest")
+    val pointOfInterest: String,
+    @ColumnInfo(name = "entry_date")
+    val entryDate: Date,
+    @ColumnInfo(name = "sale_date")
+    val saleDate: Date? = null,
+    @ColumnInfo(name = "photos")
+    val photos: List<Photo>,
+    @ColumnInfo(name = "latitude")
+    val latitude: Double?,
+    @ColumnInfo(name = "longitude")
+    val longitude: Double?,
 )
+
