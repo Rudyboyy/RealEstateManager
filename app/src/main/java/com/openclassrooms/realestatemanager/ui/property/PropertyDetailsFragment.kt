@@ -21,9 +21,11 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
     }
     private val latitude = "48.8566"
     private val longitude = "2.3522"
-    private val defaultSettings = "${Constants.DEFAULT_ZOOM_AND_SIZE}&${Constants.DEFAULT_MARKER_TYPE}"
+    private val defaultSettings =
+        "${Constants.DEFAULT_ZOOM_AND_SIZE}&${Constants.DEFAULT_MARKER_TYPE}"
     private val currentLatLng = "$latitude,$longitude"
-    private val url = "${Constants.BASE_URL_STATIC_MAP}&center=$currentLatLng&$defaultSettings$currentLatLng&key=${BuildConfig.MAPS_API_KEY}"
+    private val url =
+        "${Constants.BASE_URL_STATIC_MAP}&center=$currentLatLng&$defaultSettings$currentLatLng&key=${BuildConfig.MAPS_API_KEY}"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,7 +33,7 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.propertyType.text = it.type
             Glide.with(binding.staticMaps)
                 .load(url)
-                .error(R.drawable.ic_add_property)
+                .error(R.drawable.no_wifi)
                 .into(binding.staticMaps)
         }
     }
