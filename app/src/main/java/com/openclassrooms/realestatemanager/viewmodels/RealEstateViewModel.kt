@@ -1,11 +1,9 @@
 package com.openclassrooms.realestatemanager.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.repository.RealEstateRepository
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
 
 class RealEstateViewModel(
@@ -19,15 +17,31 @@ class RealEstateViewModel(
 
     val propertiesLiveData: LiveData<List<Property>> = repository.properties.asLiveData()
 
-//    init {
-//        viewModelScope.launch {
-//            val properties = withContext(Dispatchers.IO) {
-//                repository.properties.first()
-//            }
-//            _selectedProperty.postValue(properties.first())
-//            _selectedProperty.postValue(propertiesLiveData.value?.get(0))
-//        }
-//    }
+    private val _latitude = MutableLiveData<Double?>()
+    val latitude: LiveData<Double?>
+        get() = _latitude
+
+    private val _longitude = MutableLiveData<Double?>()
+    val longitude: LiveData<Double?>
+        get() = _longitude
+
+    fun updateCoordinatesFromAddress(address: String) {
+        viewModelScope.launch {
+            val (latitude, longitude) = repository.getCoordinatesFromAddress(address)
+            _latitude.value = latitude
+            _longitude.value = longitude
+        }
+    }
+
+    fun getCoordinatesText(): String {
+        val latitude = latitude.value
+        val longitude = longitude.value
+        return if (latitude != null && longitude != null) {
+            "Latitude: $latitude\nLongitude: $longitude"
+        } else {
+            "Coordinates not available"
+        }
+    }
 
     fun updateSelectedProperty(property: Property) {
         _selectedProperty.value = property
@@ -35,5 +49,11 @@ class RealEstateViewModel(
 
     suspend fun update(property: Property) {
         return repository.update(property)
+    }
+
+    suspend fun updateCoordinatesFromAddress(property: Property, address: String) {
+        val (latitude, longitude) = repository.getCoordinatesFromAddress(address)
+        val updatedProperty = property.copy(latitude = latitude, longitude = longitude)
+        repository.update(updatedProperty)
     }
 }
