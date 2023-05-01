@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.injection
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.repository.RealEstateRepository
+import com.openclassrooms.realestatemanager.service.GeocodingApiService
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 import java.util.concurrent.Executor
 
