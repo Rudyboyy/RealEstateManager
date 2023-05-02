@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.MainActivityBinding
 import com.openclassrooms.realestatemanager.utils.viewBinding
@@ -20,9 +23,12 @@ class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navController: NavController
+    private var toolbar: Toolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initToolbar()
         initUi()
     }
 
@@ -30,11 +36,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_main) as NavHostFragment
-        val navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        navController = navHostFragment.navController
+        appBarConfiguration = AppBarConfiguration.Builder(
+            R.id.PropertyListFragment, R.id.MapFragment
+        )
+            .setOpenableLayout(binding.drawerLayout)
+            .build()
+        setupActionBarWithNavController(this, navController, appBarConfiguration)
+        setupWithNavController(binding.navigationView, navController)
         initDrawerLayout()
         initNavigationView()
+    }
+
+    private fun initToolbar() {
+        this.toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
     }
 
     private fun initDrawerLayout() {
@@ -52,7 +68,9 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_item_map -> {
-                    // Naviguer vers la carte
+                    if (navController.currentDestination?.id != R.id.MapFragment) {
+                        navController.navigate(R.id.action_PropertyListFragment_to_MapFragment)
+                    }
                     true
                 }
                 R.id.menu_item_add_property -> {

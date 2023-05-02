@@ -9,12 +9,24 @@
         android:id="@+id/PropertyListFragment"
         android:name="com.openclassrooms.realestatemanager.ui.property.PropertyListFragment"
         android:label="Property"
-        tools:layout="@layout/real_estates_list_fragment" />
+        tools:layout="@layout/real_estates_list_fragment">
+        <action
+            android:id="@+id/action_PropertyListFragment_to_MapFragment"
+            app:destination="@id/MapFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
 
     <fragment
-        android:id="@+id/PropertyDetailsFragment"
-        android:name="com.openclassrooms.realestatemanager.ui.property.PropertyDetailsFragment"
-        android:label="Property"
-        tools:layout="@layout/property_details_fragment" />
+        android:id="@+id/MapFragment"
+        android:name="com.openclassrooms.realestatemanager.ui.map.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/map_fragment">
+        <action
+            android:id="@+id/action_MapFragment_to_PropertyListFragment"
+            app:destination="@id/PropertyListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
 
 </navigation>
