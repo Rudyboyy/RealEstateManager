@@ -1,10 +1,13 @@
 package com.openclassrooms.realestatemanager.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -14,6 +17,9 @@ import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.MainActivityBinding
+import com.openclassrooms.realestatemanager.ui.dialog.PermissionDialogFragment
+import com.openclassrooms.realestatemanager.utils.Constants.DIALOG
+import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_UPDATE_LOCATION
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.MainViewModel
 
@@ -46,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         setupWithNavController(binding.navigationView, navController)
         initDrawerLayout()
         initNavigationView()
+        requestLocationPermission()
     }
 
     private fun initToolbar() {
@@ -87,4 +94,40 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun requestLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                REQUEST_CODE_UPDATE_LOCATION
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_UPDATE_LOCATION) {
+            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                val permissionDialogFragment = PermissionDialogFragment()
+                permissionDialogFragment.show(supportFragmentManager, DIALOG)
+            }
+        }
+    }
+
 }
