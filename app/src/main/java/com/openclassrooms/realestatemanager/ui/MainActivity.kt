@@ -17,8 +17,6 @@ import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.MainActivityBinding
-import com.openclassrooms.realestatemanager.ui.dialog.PermissionDialogFragment
-import com.openclassrooms.realestatemanager.utils.Constants.DIALOG
 import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_UPDATE_LOCATION
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.MainViewModel
@@ -115,19 +113,4 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_UPDATE_LOCATION) {
-            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                val permissionDialogFragment = PermissionDialogFragment()
-                permissionDialogFragment.show(supportFragmentManager, DIALOG)
-            }
-        }
-    }
-
 }

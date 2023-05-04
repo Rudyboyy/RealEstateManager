@@ -10,5 +10,4 @@ object Constants {
     const val BASE_URL = "https://maps.googleapis.com/maps/api/"
     const val MAPS_API_KEY = BuildConfig.MAPS_API_KEY
     const val REQUEST_CODE_UPDATE_LOCATION = 541
-    const val DIALOG = "dialog"
 }
