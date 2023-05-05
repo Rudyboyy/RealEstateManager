@@ -9,6 +9,7 @@
     tools:context="com.openclassrooms.realestatemanager.ui.MainActivity">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp">
@@ -27,7 +28,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="" />
+                tools:listitem="@layout/photo_item" />
 
             <TextView
                 android:id="@+id/propertyType"
@@ -70,9 +71,9 @@
                 android:id="@+id/surface"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
                 android:padding="8dp"
                 android:textSize="20sp"
-                android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_surface"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,10 +84,10 @@
                 android:id="@+id/property_rooms"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
                 android:padding="8dp"
                 android:textSize="20sp"
                 app:drawableStartCompat="@drawable/ic_room"
-                android:drawablePadding="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/surface"
@@ -96,9 +97,9 @@
                 android:id="@+id/bathroom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
                 android:padding="8dp"
                 android:textSize="20sp"
-                android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_bathroom"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
@@ -109,9 +110,9 @@
                 android:id="@+id/bedroom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
                 android:padding="8dp"
                 android:textSize="20sp"
-                android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_bedroom"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +145,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guideline"
-                app:layout_constraintTop_toTopOf="@id/property_rooms"
+                app:layout_constraintTop_toBottomOf="@id/property_status"
                 tools:text="From 20/05/12" />
 
             <TextView
@@ -155,7 +156,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guideline"
-                app:layout_constraintTop_toTopOf="@id/bathroom"
+                app:layout_constraintTop_toBottomOf="@id/creation_date"
                 tools:text="By Mike" />
 
             <TextView
@@ -166,7 +167,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guideline"
-                app:layout_constraintTop_toTopOf="@id/bedroom"
+                app:layout_constraintTop_toBottomOf="@id/agent"
                 tools:text="Sell on 14/08/12" />
 
             <com.google.android.material.divider.MaterialDivider
@@ -215,17 +216,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/property_description" />
 
+            <ImageView
+                android:id="@+id/icon_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="-4dp"
+                android:src="@drawable/ic_location"
+                app:layout_constraintEnd_toStartOf="@id/address"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/address" />
+
             <TextView
                 android:id="@+id/address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
                 android:padding="4dp"
                 android:textSize="18sp"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="@drawable/ic_location"
                 app:layout_constraintBottom_toTopOf="@id/point_of_interest_title"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/icon_location"
                 app:layout_constraintTop_toTopOf="@id/static_maps"
                 tools:text="10 Chic Street, California" />
 
@@ -234,13 +244,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
+                android:text="Point of interest"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/point_of_interest"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address"
-                android:text="Point of interest" />
+                app:layout_constraintTop_toBottomOf="@id/address" />
 
             <TextView
                 android:id="@+id/point_of_interest"
