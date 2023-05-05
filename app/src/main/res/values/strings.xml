@@ -11,5 +11,8 @@
     <string name="new_property">New property</string>
     <string name="map">Map</string>
     <string name="icon">icon</string>
+    <string name="price_format_dollar">%s $</string>
+    <string name="price_format_eur">%s €</string>
+    <string name="square_meters">%s m²</string>
 
 </resources>

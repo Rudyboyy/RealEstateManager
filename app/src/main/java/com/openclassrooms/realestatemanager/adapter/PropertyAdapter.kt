@@ -23,7 +23,7 @@ class PropertyAdapter(private val onItemClicked: (Property) -> Unit) :
         holder.bind(property)
     }
 
-    class ViewHolder(private val binding: RealEstateItemBinding) :
+    inner class ViewHolder(private val binding: RealEstateItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Property) {
             binding.propertyType.text = item.type
