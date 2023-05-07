@@ -10,7 +10,9 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PhotoAdapter
 import com.openclassrooms.realestatemanager.databinding.PropertyDetailsFragmentBinding
 import com.openclassrooms.realestatemanager.injection.Injection
+import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
+import com.openclassrooms.realestatemanager.ui.dialog.PhotoDialogFragment
 import com.openclassrooms.realestatemanager.utils.Constants.BASE_URL_STATIC_MAP
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_MARKER_TYPE
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_ZOOM_AND_SIZE
@@ -62,10 +64,13 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
     }
 
     private fun initRecyclerView(property: Property) {
-        val adapter = PhotoAdapter()
+        val adapter = PhotoAdapter {
+            photoDialog(property.photos, it)
+        }
         binding.imageRecyclerview.adapter = adapter
         adapter.submitList(property.photos)
     }
+
 
     @SuppressLint("SimpleDateFormat")
     private fun getFormatedDate(date: Date): String? {
@@ -83,5 +88,10 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             .load(url)
             .error(R.drawable.no_wifi)
             .into(binding.staticMaps)
+    }
+
+    private fun photoDialog(photos: List<Photo>, position: Int) {
+        val filterDialog = PhotoDialogFragment(photos, position)
+        filterDialog.show(requireParentFragment().parentFragmentManager, "filter")
     }
 }

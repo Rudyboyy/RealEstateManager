@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.databinding.PhotoItemBinding
 import com.openclassrooms.realestatemanager.model.Photo
 
-class PhotoAdapter() :
+class PhotoAdapter(private val onItemClicked: (Int) -> Unit) :
     ListAdapter<Photo, PhotoAdapter.ViewHolder>(PhotosDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -17,11 +17,11 @@ class PhotoAdapter() :
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val property = getItem(position)
+        val photo = getItem(position)
         holder.itemView.setOnClickListener {
-            //todo display photo full screen
+            onItemClicked(position)
         }
-        holder.bind(property)
+        holder.bind(photo)
     }
 
     inner class ViewHolder(private val binding: PhotoItemBinding) :
