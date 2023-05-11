@@ -199,7 +199,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:justificationMode="inter_word"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tristique nibh et interdum consequat. Sed consequat, tortor vel rutrum congue, arcu ligula viverra nisi, sed gravida justo nisi vitae lectus. Pellentesque vel nulla eu lectus ultricies viverra ac sit amet orci. Duis finibus laoreet volutpat. In rhoncus tempor orci, eu viverra risus pretium a. Duis aliquam pretium ligula vel dictum. Donec eu felis turpis. Pellentesque a risus tincidunt, placerat velit id, dapibus odio. Sed porta purus vel convallis pretium. Nunc id risus ante. Vivamus in hendrerit sem. Duis non mi et lectus luctus ullamcorper. Curabitur placerat mauris quis elit ultrices consequat. Sed et sapien velit."
+                android:text="@string/lorem_ipsum"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
