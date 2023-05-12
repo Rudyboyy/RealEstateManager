@@ -8,23 +8,26 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="AddFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="MapFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-38" />
-                            <option name="y" value="5" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_MapFragment_to_PropertyListFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -34,18 +37,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-245" />
-                            <option name="y" value="5" />
+                            <option name="x" value="12" />
+                            <option name="y" value="368" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_PropertyListFragment_to_MapFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_homeFragment_to_imageSlideDialogFragment">
+                            <entry key="action_PropertyListFragment_to_imageSlideDialogFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -55,13 +53,28 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="imageSlideDialogFragment">
+                  <entry key="action_Fragment_to_PropertyListFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="action_PropertyListFragment_to_AddFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="action_PropertyListFragment_to_MapFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="photoSlideDialogFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="256" />
+                            <option name="y" value="368" />
                           </Point>
                         </option>
                       </LayoutPositions>

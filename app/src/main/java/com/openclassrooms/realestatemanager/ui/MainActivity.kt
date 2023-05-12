@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment_main) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.PropertyListFragment, R.id.MapFragment
+            R.id.PropertyListFragment, R.id.MapFragment, R.id.AddFragment
         )
             .setOpenableLayout(binding.drawerLayout)
             .build()
@@ -71,16 +71,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun initNavigationView() {
         val navView = binding.navigationView
+        val currentDestination = navController.currentDestination?.id
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_item_map -> {
-                    if (navController.currentDestination?.id != R.id.MapFragment) {
-                        navController.navigate(R.id.action_PropertyListFragment_to_MapFragment)
+                    if (currentDestination != R.id.MapFragment) {
+                        navController.navigate(R.id.action_global_to_MapFragment)
                     }
                     true
                 }
                 R.id.menu_item_add_property -> {
-                    // Naviguer vers l'interface d'ajout de bien immobilier
+                    if (currentDestination != R.id.AddFragment) {
+                        navController.navigate(R.id.action_global_to_AddFragment)
+                    }
                     true
                 }
                 R.id.menu_item_mortgage_calculator -> {

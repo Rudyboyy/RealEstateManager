@@ -8,7 +8,11 @@ object FragmentUtils {
 
     fun Fragment.handleBackPressed(destinationId: Int) {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigate(destinationId)
+            if (findNavController().currentDestination?.id == destinationId) {
+                requireActivity().moveTaskToBack(true)
+            } else {
+                findNavController().navigate(destinationId)
+            }
         }
     }
 }
