@@ -2,14 +2,9 @@ package com.openclassrooms.realestatemanager.repository
 
 import com.openclassrooms.realestatemanager.database.dao.PropertyDao
 import com.openclassrooms.realestatemanager.model.Property
-import com.openclassrooms.realestatemanager.model.dto.GeocodingApiResponse
 import com.openclassrooms.realestatemanager.service.GeocodingApiService
-import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Constants.MAPS_API_KEY
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
-import retrofit2.Response
 
 class RealEstateRepository(
     private val propertyDao: PropertyDao,

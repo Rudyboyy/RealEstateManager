@@ -42,11 +42,21 @@
             android:layout_marginEnd="20dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/add_button"
+            app:layout_constraintBottom_toTopOf="@id/progressBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textFieldAgent"
             tools:listitem="@layout/photo_item" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/add_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_photo_recyclerview" />
 
         <Button
             android:id="@+id/add_button"
@@ -58,7 +68,7 @@
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_photo_recyclerview" />
+            app:layout_constraintTop_toBottomOf="@id/progressBar" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textFieldType"
@@ -259,9 +269,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/InterestPoint" />
+<!--        todo need to fix it because the view is not all displayed-->
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

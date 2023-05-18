@@ -11,7 +11,7 @@ interface PropertyDao {
     fun getAllProperties(): Flow<List<Property>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(property: Property): Long
+    suspend fun insert(property: Property)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(properties: List<Property>)

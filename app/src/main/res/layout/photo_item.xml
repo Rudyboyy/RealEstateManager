@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+<!--        todo add button set on gone to manage updating or deleting photo-->
         <ImageView
             android:id="@+id/photo"
             android:layout_width="150dp"

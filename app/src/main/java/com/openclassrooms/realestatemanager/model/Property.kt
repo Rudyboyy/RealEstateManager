@@ -3,13 +3,15 @@ package com.openclassrooms.realestatemanager.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.openclassrooms.realestatemanager.model.Photo
+import com.openclassrooms.realestatemanager.model.PropertyStatus
 import java.util.*
 
 @Entity(tableName = "realEstate")
 data class Property(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "property_id")
-    val id: Int,
+    val id: Int = 0,
     @ColumnInfo(name = "agent")
     val agent: String,
     @ColumnInfo(name = "type")

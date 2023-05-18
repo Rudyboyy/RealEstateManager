@@ -39,5 +39,9 @@
     <string name="shopping_center_mall">Shopping center/mall</string>
     <string name="park">Park</string>
     <string name="school">School</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="photo_description">Photo description</string>
+    <string name="task_cancelled">Task Cancelled</string>
 
 </resources>
