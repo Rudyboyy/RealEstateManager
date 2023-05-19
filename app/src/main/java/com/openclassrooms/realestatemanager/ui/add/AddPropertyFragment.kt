@@ -5,8 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -14,11 +14,13 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.textfield.TextInputEditText
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PhotoAdapter
 import com.openclassrooms.realestatemanager.databinding.AddPropertyFragmentBinding
@@ -48,22 +50,27 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleBackPressed(actionFragment)
+
+        initRecyclerView(propertyPhotos)
+
+        setAddPhotoButton()
+        setBackButton()
+        setSaveButton()
+    }
+
+    private fun setAddPhotoButton() {
         binding.addButton.setOnClickListener {
             ImagePicker.with(this)
-                .compress(1024)         //Final image size will be less than 1 MB(Optional)
+                .compress(1024)
                 .maxResultSize(
                     1080,
                     1080
-                )  //Final image resolution will be less than 1080 x 1080(Optional)
+                )
                 .createIntent { intent ->
-                    startForProfileImageResult.launch(intent)
+                    startForPhotoResult.launch(intent)
                     binding.progressBar.visibility = View.VISIBLE
                 }
         }
-        initRecyclerView(propertyPhotos)
-
-        setBackButton()
-        setSaveButton()
     }
 
     private fun initRecyclerView(photos: List<Photo>) {
@@ -83,7 +90,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private val startForProfileImageResult =
+    private val startForPhotoResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             val resultCode = result.resultCode
             val data = result.data
@@ -113,27 +120,22 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
 
     private fun dialogPhotoDescription(fileUri: Uri) {
         val dialogBuilder = AlertDialog.Builder(requireContext())
-        dialogBuilder.setTitle(getString(R.string.photo_description))
-
         val input = EditText(requireContext())
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        dialogBuilder.setTitle(getString(R.string.photo_description))
         dialogBuilder.setView(input)
-        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         dialogBuilder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->
             val description = input.text.toString()
-
             val photo = Photo(uri = fileUri.toString(), description = description)
-
             propertyPhotos.add(photo)
-
             inputMethodManager.hideSoftInputFromWindow(input.windowToken, 0)
-
             dialog.dismiss()
         }
 
         dialogBuilder.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
             inputMethodManager.hideSoftInputFromWindow(input.windowToken, 0)
-
             dialog.dismiss()
         }
 
@@ -159,7 +161,9 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         val latFlow = viewModel.latitude.asFlow()
         val lgtFlow = viewModel.longitude.asFlow()
         val poi = getPoi()
-//todo exemple MyReu pour geré quand le text n'est pas rempli est qu'il faut le remplir(+geré les double)
+        setDoubleFormat(binding.textSurface)
+        setDoubleFormat(binding.textPrice)
+//todo exemple MyReu pour geré quand le text n'est pas rempli est qu'il faut le remplir
         viewModel.updateCoordinatesFromAddress(address)
         lifecycleScope.launch {
             combine(latFlow, lgtFlow) { lat, lgt ->
@@ -169,7 +173,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
                     type = "${binding.textType.text}",
                     price = binding.textPrice.text.toString().toDouble(),
                     description = "${binding.textDescription.text}",
-                    address = address,
+                    address = address,//todo need to change the way to get the address with postal code country city etc to get the right position with geocoding
                     status = PropertyStatus.AVAILABLE,
                     numberOfRooms = binding.numRoom.text.toString().toInt(),
                     numberOfBedrooms = binding.numBedroom.text.toString().toInt(),
@@ -186,36 +190,56 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         }
     }
 
+    private fun setDoubleFormat(text: TextInputEditText) {
+        text.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val input = s.toString()
+
+                if (input.isNotEmpty() && !input.contains('.')) {
+                    text.removeTextChangedListener(this)
+                    text.setText(getString(R.string.price_format_with_decimal, input))
+                    text.addTextChangedListener(this)
+                    val lastPosition = input.length + 2
+                    text.setSelection(lastPosition)
+                }
+            }
+        })
+    }
+
     private fun getPoi(): String {
         val grid = binding.checkbox
         val selectedPoiList = mutableListOf<String>()
-            if (grid.checkboxNearbySchool.isChecked) {
-                selectedPoiList.add(getString(R.string.school))
-            }
-            if (grid.checkboxNearbyPark.isChecked) {
-                selectedPoiList.add(getString(R.string.park))
-            }
-            if (grid.checkboxNearbyHospital.isChecked) {
-                selectedPoiList.add(getString(R.string.hospital))
-            }
-            if (grid.checkboxNearbySupermarket.isChecked) {
-                selectedPoiList.add(getString(R.string.supermarket))
-            }
-            if (grid.checkboxNearbyPharmacy.isChecked) {
-                selectedPoiList.add(getString(R.string.pharmacy))
-            }
-            if (grid.checkboxNearbyGasStation.isChecked) {
-                selectedPoiList.add(getString(R.string.gas_station))
-            }
-            if (grid.checkboxNearbyEatery.isChecked) {
-                selectedPoiList.add(getString(R.string.eatery))
-            }
-            if (grid.checkboxNearbyShop.isChecked) {
-                selectedPoiList.add(getString(R.string.shopping_center_mall))
-            }
-            if (grid.checkboxNearbyPublicTransportation.isChecked) {
-                selectedPoiList.add(getString(R.string.public_transportation))
-            }
+        if (grid.checkboxNearbySchool.isChecked) {
+            selectedPoiList.add(getString(R.string.school))
+        }
+        if (grid.checkboxNearbyPark.isChecked) {
+            selectedPoiList.add(getString(R.string.park))
+        }
+        if (grid.checkboxNearbyHospital.isChecked) {
+            selectedPoiList.add(getString(R.string.hospital))
+        }
+        if (grid.checkboxNearbySupermarket.isChecked) {
+            selectedPoiList.add(getString(R.string.supermarket))
+        }
+        if (grid.checkboxNearbyPharmacy.isChecked) {
+            selectedPoiList.add(getString(R.string.pharmacy))
+        }
+        if (grid.checkboxNearbyGasStation.isChecked) {
+            selectedPoiList.add(getString(R.string.gas_station))
+        }
+        if (grid.checkboxNearbyEatery.isChecked) {
+            selectedPoiList.add(getString(R.string.eatery))
+        }
+        if (grid.checkboxNearbyShop.isChecked) {
+            selectedPoiList.add(getString(R.string.shopping_center_mall))
+        }
+        if (grid.checkboxNearbyPublicTransportation.isChecked) {
+            selectedPoiList.add(getString(R.string.public_transportation))
+        }
         return if (selectedPoiList.isEmpty()) {
             ""
         } else {

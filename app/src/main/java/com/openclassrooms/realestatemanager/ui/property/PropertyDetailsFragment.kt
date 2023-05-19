@@ -45,7 +45,7 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.address.text = it.address
             binding.propertyType.text = it.type
             binding.pointOfInterest.text = it.pointOfInterest
-            binding.propertyPrice.text = String.format(priceFormat, it.price.toInt())
+            binding.propertyPrice.text = switchDoubleToInt(priceFormat, it.price)
             binding.agent.text = it.agent
             binding.bathroom.text = it.numberOfBathrooms.toString()
             binding.bedroom.text = it.numberOfBedrooms.toString()
@@ -53,13 +53,23 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.creationDate.text = getFormatedDate(it.entryDate)
             binding.sellDate.text = it.saleDate?.let { date -> getFormatedDate(date) }
             binding.propertyDescription.text = it.description
-            binding.surface.text = String.format(surfaceFormat, it.surface.toInt())
+            binding.surface.text = switchDoubleToInt(surfaceFormat, it.surface)
             binding.propertyStatus.text = it.status.name
             // To go back to top when the view is updated
             binding.nestedScrollView.scrollTo(0, 0)
             initRecyclerView(it.photos)
             updateStaticMap(it)
         }
+    }
+
+    private fun switchDoubleToInt(format: String, double: Double): String {
+        val isInteger = double.toInt().toDouble() == double
+        val formattedPrice = if (isInteger) {
+            String.format(format, double.toInt())
+        } else {
+            String.format(format, double)
+        }
+        return formattedPrice
     }
 
     private fun initRecyclerView(photos: List<Photo>) {

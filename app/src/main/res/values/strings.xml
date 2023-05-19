@@ -14,6 +14,7 @@
     <string name="price_format_dollar">%s $</string>
     <string name="price_format_eur">%s €</string>
     <string name="square_meters">%s m²</string>
+    <string name="price_format_with_decimal">%s.0</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tristique nibh et interdum consequat. Sed consequat, tortor vel rutrum congue, arcu ligula viverra nisi, sed gravida justo nisi vitae lectus. Pellentesque vel nulla eu lectus ultricies viverra ac sit amet orci. Duis finibus laoreet volutpat. In rhoncus tempor orci, eu viverra risus pretium a. Duis aliquam pretium ligula vel dictum. Donec eu felis turpis. Pellentesque a risus tincidunt, placerat velit id, dapibus odio. Sed porta purus vel convallis pretium. Nunc id risus ante. Vivamus in hendrerit sem. Duis non mi et lectus luctus ullamcorper. Curabitur placerat mauris quis elit ultrices consequat. Sed et sapien velit.</string>
     <string name="type">Type</string>
     <string name="price">Price</string>
