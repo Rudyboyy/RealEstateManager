@@ -150,35 +150,69 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     }
 
     private fun setSaveButton() {
+        val fields = listOf(
+            binding.textAgent to binding.textFieldAgent,
+            binding.textType to binding.textFieldType,
+            binding.textPrice to binding.textFieldPrice,
+            binding.textSurface to binding.textFieldSurface,
+            binding.numRoom to binding.textFieldRoom,
+            binding.numBathroom to binding.textFieldBathroom,
+            binding.numBedroom to binding.textFieldBedroom,
+            binding.textDescription to binding.textFieldDescription,
+            binding.textAddress to binding.textFieldAddress
+        )
+
         binding.saveButton.setOnClickListener {
-            createProperty()
-            findNavController().navigate(actionFragment)
+            var isValid = true
+
+            for ((textInput, textField) in fields) {
+                val input = textInput.text.toString()
+                if (input.isEmpty()) {
+                    textField.error = getString(R.string.error_empty_field, textInput.hint)
+                    isValid = false
+                } else {
+                    textField.error = null
+                }
+            }
+
+            if (isValid) {
+                createProperty()
+                findNavController().navigate(actionFragment)
+            }
+            showToast(isValid)
         }
     }
 
     private fun createProperty() {
+        setDoubleFormat(binding.textSurface)
+        setDoubleFormat(binding.textPrice)
+        val agent = "${binding.textAgent.text}"
+        val type = "${binding.textType.text}"
+        val price = binding.textPrice.text.toString().toDouble()
+        val description = "${binding.textDescription.text}"
         val address = "${binding.textAddress.text}"
+        val numRoom = binding.numRoom.text.toString().toInt()
+        val numBedroom = binding.numBedroom.text.toString().toInt()
+        val numBathroom = binding.numBathroom.text.toString().toInt()
+        val surface = binding.textSurface.text.toString().toDouble()
         val latFlow = viewModel.latitude.asFlow()
         val lgtFlow = viewModel.longitude.asFlow()
         val poi = getPoi()
-        setDoubleFormat(binding.textSurface)
-        setDoubleFormat(binding.textPrice)
-//todo exemple MyReu pour geré quand le text n'est pas rempli est qu'il faut le remplir
         viewModel.updateCoordinatesFromAddress(address)
         lifecycleScope.launch {
             combine(latFlow, lgtFlow) { lat, lgt ->
                 val property = Property(
                     id = 0,
-                    agent = "${binding.textAgent.text}",
-                    type = "${binding.textType.text}",
-                    price = binding.textPrice.text.toString().toDouble(),
-                    description = "${binding.textDescription.text}",
+                    agent = agent,
+                    type = type,
+                    price = price,
+                    description = description,
                     address = address,//todo need to change the way to get the address with postal code country city etc to get the right position with geocoding
                     status = PropertyStatus.AVAILABLE,
-                    numberOfRooms = binding.numRoom.text.toString().toInt(),
-                    numberOfBedrooms = binding.numBedroom.text.toString().toInt(),
-                    numberOfBathrooms = binding.numBathroom.text.toString().toInt(),
-                    surface = binding.textSurface.text.toString().toDouble(),
+                    numberOfRooms = numRoom,
+                    numberOfBedrooms = numBedroom,
+                    numberOfBathrooms = numBathroom,
+                    surface = surface,
                     pointOfInterest = poi,
                     entryDate = Date(System.currentTimeMillis()),
                     latitude = lat,
@@ -189,6 +223,16 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             }.collect()
         }
     }
+
+    private fun showToast(success: Boolean) {
+        var message = getString(R.string.property_created)
+        if (!success) {
+            message = getString(R.string.missing_information)
+        }
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+            .show()
+    }
+
 
     private fun setDoubleFormat(text: TextInputEditText) {
         text.addTextChangedListener(object : TextWatcher {

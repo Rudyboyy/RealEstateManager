@@ -44,5 +44,13 @@
     <string name="ok">OK</string>
     <string name="photo_description">Photo description</string>
     <string name="task_cancelled">Task Cancelled</string>
+    <string name="create_property_error">please fill in the box</string>
+    <string name="missing_information">missing information !</string>
+    <string name="property_created">Property created !</string>
+    <string name="error_empty_field">Please enter %s.</string>
+    <string name="room_number">Room number</string>
+    <string name="bathroom_number">Bathroom number</string>
+    <string name="bedroom_number">Bedroom number</string>
+
 
 </resources>

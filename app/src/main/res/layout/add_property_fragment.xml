@@ -155,7 +155,7 @@
                 android:id="@+id/numRoom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/room"
+                android:hint="@string/room_number"
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -178,7 +178,7 @@
                 android:id="@+id/numBathroom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/bathroom"
+                android:hint="@string/bathroom_number"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -200,7 +200,7 @@
                 android:id="@+id/numBedroom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/bedroom"
+                android:hint="@string/bedroom_number"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
