@@ -5,17 +5,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PhotoAdapter
 import com.openclassrooms.realestatemanager.databinding.PropertyDetailsFragmentBinding
 import com.openclassrooms.realestatemanager.injection.Injection
+import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.utils.Constants.BASE_URL_STATIC_MAP
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_MARKER_TYPE
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_ZOOM_AND_SIZE
 import com.openclassrooms.realestatemanager.utils.Constants.MAPS_API_KEY
-import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 import java.text.DateFormat
@@ -44,7 +45,7 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.address.text = it.address
             binding.propertyType.text = it.type
             binding.pointOfInterest.text = it.pointOfInterest
-            binding.propertyPrice.text = String.format(priceFormat, it.price.toInt())
+            binding.propertyPrice.text = switchDoubleToInt(priceFormat, it.price)
             binding.agent.text = it.agent
             binding.bathroom.text = it.numberOfBathrooms.toString()
             binding.bedroom.text = it.numberOfBedrooms.toString()
@@ -52,20 +53,41 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.creationDate.text = getFormatedDate(it.entryDate)
             binding.sellDate.text = it.saleDate?.let { date -> getFormatedDate(date) }
             binding.propertyDescription.text = it.description
-            binding.surface.text = String.format(surfaceFormat, it.surface.toInt())
+            binding.surface.text = switchDoubleToInt(surfaceFormat, it.surface)
             binding.propertyStatus.text = it.status.name
             // To go back to top when the view is updated
             binding.nestedScrollView.scrollTo(0, 0)
-            initRecyclerView(it)
+            initRecyclerView(it.photos)
             updateStaticMap(it)
         }
     }
 
-    private fun initRecyclerView(property: Property) {
-        val adapter = PhotoAdapter()
-        binding.imageRecyclerview.adapter = adapter
-        adapter.submitList(property.photos)
+    private fun switchDoubleToInt(format: String, double: Double): String {
+        val isInteger = double.toInt().toDouble() == double
+        val formattedPrice = if (isInteger) {
+            String.format(format, double.toInt())
+        } else {
+            String.format(format, double)
+        }
+        return formattedPrice
     }
+
+    private fun initRecyclerView(photos: List<Photo>) {
+        val adapter = PhotoAdapter { position ->
+            val photoUris = photos.map { it.uri }
+            val photoDescriptions = photos.map { it.description }
+            val action =
+                PropertyListFragmentDirections.actionPropertyListFragmentToImageSlideDialogFragment(
+                    photoUris.toTypedArray(),
+                    photoDescriptions.toTypedArray(),
+                    position
+                )
+            findNavController().navigate(action)
+        }
+        binding.imageRecyclerview.adapter = adapter
+        adapter.submitList(photos)
+    }
+
 
     @SuppressLint("SimpleDateFormat")
     private fun getFormatedDate(date: Date): String? {

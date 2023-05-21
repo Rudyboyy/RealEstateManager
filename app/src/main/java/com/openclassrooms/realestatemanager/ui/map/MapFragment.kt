@@ -24,7 +24,7 @@ class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
     private val binding by viewBinding { MapFragmentBinding.bind(it) }
     private val viewModel by viewModels<MapViewModel>()
     private lateinit var map: GoogleMap
-    private val actionFragment: Int = R.id.action_MapFragment_to_PropertyListFragment
+    private val actionFragment: Int = R.id.action_global_to_PropertyListFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

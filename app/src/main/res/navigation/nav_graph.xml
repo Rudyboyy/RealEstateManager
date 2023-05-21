@@ -11,22 +11,51 @@
         android:label="Property"
         tools:layout="@layout/real_estates_list_fragment">
         <action
-            android:id="@+id/action_PropertyListFragment_to_MapFragment"
-            app:destination="@id/MapFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
+            android:id="@+id/action_PropertyListFragment_to_imageSlideDialogFragment"
+            app:destination="@id/photoSlideDialogFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/MapFragment"
         android:name="com.openclassrooms.realestatemanager.ui.map.MapFragment"
         android:label="Map"
-        tools:layout="@layout/map_fragment">
-        <action
-            android:id="@+id/action_MapFragment_to_PropertyListFragment"
-            app:destination="@id/PropertyListFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
-    </fragment>
+        tools:layout="@layout/map_fragment"/>
+
+    <fragment
+        android:id="@+id/AddFragment"
+        android:name="com.openclassrooms.realestatemanager.ui.add.AddPropertyFragment"
+        android:label="Add"
+        tools:layout="@layout/add_property_fragment"/>
+
+    <dialog
+        android:id="@+id/photoSlideDialogFragment"
+        android:name="com.openclassrooms.realestatemanager.ui.dialog.PhotoDialogFragment"
+        tools:layout="@layout/photo_dialog_fragment">
+        <argument
+            android:name="photoUrls"
+            app:argType="string[]" />
+        <argument
+            android:name="description"
+            app:argType="string[]" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </dialog>
+
+    <action
+        android:id="@+id/action_global_to_MapFragment"
+        app:destination="@id/MapFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out" />
+    <action
+        android:id="@+id/action_global_to_AddFragment"
+        app:destination="@id/AddFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out" />
+    <action
+        android:id="@+id/action_global_to_PropertyListFragment"
+        app:destination="@id/PropertyListFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out" />
 
 </navigation>

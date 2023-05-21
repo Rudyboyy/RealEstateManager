@@ -14,5 +14,43 @@
     <string name="price_format_dollar">%s $</string>
     <string name="price_format_eur">%s €</string>
     <string name="square_meters">%s m²</string>
+    <string name="price_format_with_decimal">%s.0</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tristique nibh et interdum consequat. Sed consequat, tortor vel rutrum congue, arcu ligula viverra nisi, sed gravida justo nisi vitae lectus. Pellentesque vel nulla eu lectus ultricies viverra ac sit amet orci. Duis finibus laoreet volutpat. In rhoncus tempor orci, eu viverra risus pretium a. Duis aliquam pretium ligula vel dictum. Donec eu felis turpis. Pellentesque a risus tincidunt, placerat velit id, dapibus odio. Sed porta purus vel convallis pretium. Nunc id risus ante. Vivamus in hendrerit sem. Duis non mi et lectus luctus ullamcorper. Curabitur placerat mauris quis elit ultrices consequat. Sed et sapien velit.</string>
+    <string name="type">Type</string>
+    <string name="price">Price</string>
+    <string name="surface">Surface</string>
+    <string name="number_of_room">Number of room</string>
+    <string name="number_of_bathroom">Number of bathroom</string>
+    <string name="number_of_bedroom">Number of bedroom</string>
+    <string name="address">Address</string>
+    <string name="point_of_interest">Point of interest</string>
+    <string name="agent">Agent</string>
+    <string name="save">Save</string>
+    <string name="add_picture">Add picture</string>
+    <string name="room">Room</string>
+    <string name="bathroom">Bathroom</string>
+    <string name="bedroom">Bedroom</string>
+    <string name="description">Description</string>
+    <string name="eatery">Eatery</string>
+    <string name="gas_station">Gas station</string>
+    <string name="pharmacy">Pharmacy</string>
+    <string name="supermarket">Supermarket</string>
+    <string name="hospital">Hospital</string>
+    <string name="public_transportation">Public transportation</string>
+    <string name="shopping_center_mall">Shopping center/mall</string>
+    <string name="park">Park</string>
+    <string name="school">School</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="photo_description">Photo description</string>
+    <string name="task_cancelled">Task Cancelled</string>
+    <string name="create_property_error">please fill in the box</string>
+    <string name="missing_information">missing information !</string>
+    <string name="property_created">Property created !</string>
+    <string name="error_empty_field">Please enter %s.</string>
+    <string name="room_number">Room number</string>
+    <string name="bathroom_number">Bathroom number</string>
+    <string name="bedroom_number">Bedroom number</string>
+
 
 </resources>

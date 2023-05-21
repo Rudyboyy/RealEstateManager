@@ -47,13 +47,21 @@ class RealEstateViewModel(
         _selectedProperty.value = property
     }
 
-    suspend fun update(property: Property) {
-        return repository.update(property)
+    fun update(property: Property) {
+        viewModelScope.launch {
+            repository.update(property)
+        }
     }
 
-    suspend fun updateCoordinatesFromAddress(property: Property, address: String) {
-        val (latitude, longitude) = repository.getCoordinatesFromAddress(address)
-        val updatedProperty = property.copy(latitude = latitude, longitude = longitude)
-        repository.update(updatedProperty)
+    fun updateCoordinatesFromAddress(property: Property, address: String) {
+        viewModelScope.launch {
+            val (latitude, longitude) = repository.getCoordinatesFromAddress(address)
+            val updatedProperty = property.copy(latitude = latitude, longitude = longitude)
+            repository.update(updatedProperty)
+        }
+    }
+
+    fun addProperty(property: Property) {
+            executor.execute { viewModelScope.launch {repository.invoke(property) } }
     }
 }
