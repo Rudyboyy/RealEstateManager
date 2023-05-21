@@ -19,9 +19,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.adapter.CheckboxAdapter
 import com.openclassrooms.realestatemanager.adapter.PhotoAdapter
 import com.openclassrooms.realestatemanager.databinding.AddPropertyFragmentBinding
 import com.openclassrooms.realestatemanager.injection.Injection
@@ -29,6 +31,7 @@ import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.model.PropertyStatus
 import com.openclassrooms.realestatemanager.ui.property.PropertyListFragmentDirections
+import com.openclassrooms.realestatemanager.utils.CheckBoxOptionProvider.getOptions
 import com.openclassrooms.realestatemanager.utils.FragmentUtils.handleBackPressed
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
@@ -45,13 +48,15 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     }
     private val actionFragment: Int = R.id.action_global_to_PropertyListFragment
     private val propertyPhotos = mutableListOf<Photo>()
-    private lateinit var adapter: PhotoAdapter
+    private lateinit var photoAdapter: PhotoAdapter
+    private lateinit var checkboxAdapter: CheckboxAdapter
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleBackPressed(actionFragment)
-
-        initRecyclerView(propertyPhotos)
+        initPhotoRecyclerView(propertyPhotos)
+        initCheckboxRecyclerView()
 
         setAddPhotoButton()
         setBackButton()
@@ -73,8 +78,18 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         }
     }
 
-    private fun initRecyclerView(photos: List<Photo>) {
-        adapter = PhotoAdapter { position ->
+    private fun initCheckboxRecyclerView() {
+        val checkboxRecyclerView = binding.checkboxRecyclerview
+        val screenWidth = resources.displayMetrics.widthPixels
+        val desiredColumnCount = if (screenWidth < 1100) 2 else 3
+        val gridLayoutManager = GridLayoutManager(requireContext(), desiredColumnCount)
+        checkboxAdapter = CheckboxAdapter(getOptions(requireContext()))
+        checkboxRecyclerView.layoutManager = gridLayoutManager
+        checkboxRecyclerView.adapter = checkboxAdapter
+    }
+
+    private fun initPhotoRecyclerView(photos: List<Photo>) {
+        photoAdapter = PhotoAdapter { position ->
             val photoUris = photos.map { it.uri }
             val photoDescriptions = photos.map { it.description }
             val action =
@@ -85,8 +100,8 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
                 )
             findNavController().navigate(action)
         }
-        binding.addPhotoRecyclerview.adapter = adapter
-        adapter.submitList(photos)
+        binding.addPhotoRecyclerview.adapter = photoAdapter
+        photoAdapter.submitList(photos)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -114,7 +129,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
                     ).show()
                 }
             }
-            adapter.notifyDataSetChanged()
+            photoAdapter.notifyDataSetChanged()
             binding.progressBar.visibility = View.GONE
         }
 
@@ -255,35 +270,9 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     }
 
     private fun getPoi(): String {
-        val grid = binding.checkbox
         val selectedPoiList = mutableListOf<String>()
-        if (grid.checkboxNearbySchool.isChecked) {
-            selectedPoiList.add(getString(R.string.school))
-        }
-        if (grid.checkboxNearbyPark.isChecked) {
-            selectedPoiList.add(getString(R.string.park))
-        }
-        if (grid.checkboxNearbyHospital.isChecked) {
-            selectedPoiList.add(getString(R.string.hospital))
-        }
-        if (grid.checkboxNearbySupermarket.isChecked) {
-            selectedPoiList.add(getString(R.string.supermarket))
-        }
-        if (grid.checkboxNearbyPharmacy.isChecked) {
-            selectedPoiList.add(getString(R.string.pharmacy))
-        }
-        if (grid.checkboxNearbyGasStation.isChecked) {
-            selectedPoiList.add(getString(R.string.gas_station))
-        }
-        if (grid.checkboxNearbyEatery.isChecked) {
-            selectedPoiList.add(getString(R.string.eatery))
-        }
-        if (grid.checkboxNearbyShop.isChecked) {
-            selectedPoiList.add(getString(R.string.shopping_center_mall))
-        }
-        if (grid.checkboxNearbyPublicTransportation.isChecked) {
-            selectedPoiList.add(getString(R.string.public_transportation))
-        }
+        selectedPoiList.addAll(checkboxAdapter.checkedItems)
+
         return if (selectedPoiList.isEmpty()) {
             ""
         } else {

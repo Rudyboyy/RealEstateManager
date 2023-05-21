@@ -258,9 +258,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textFieldAddress" />
 
-        <include
-            android:id="@+id/checkbox"
-            layout="@layout/checkbox_grid"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/checkbox_recyclerview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -268,8 +267,9 @@
             android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/InterestPoint" />
-<!--        todo need to fix it because the view is not all displayed-->
+            app:layout_constraintTop_toBottomOf="@id/InterestPoint"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/checkbox_item" />
 
 
         <Button
@@ -286,7 +286,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/checkbox" />
+            app:layout_constraintTop_toBottomOf="@id/checkbox_recyclerview" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/backButton"
