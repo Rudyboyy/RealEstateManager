@@ -13,6 +13,10 @@ import kotlinx.coroutines.*
 class RealEstateContentProvider : ContentProvider() {
 
     private lateinit var propertyDao: PropertyDao
+    private val AUTHORITY = "com.openclassrooms.realestatemanager.provider"
+    private val TABLE_NAME = Property::class.simpleName
+    val URI_ITEM = Uri.parse("content://$AUTHORITY/$TABLE_NAME")
+
 
     override fun onCreate(): Boolean {
         context?.let {
@@ -35,7 +39,7 @@ class RealEstateContentProvider : ContentProvider() {
     }
 
     override fun getType(uri: Uri): String? {
-        return "vnd.android.cursor.dir/${context?.packageName}.realEstate"
+        return "vnd.android.cursor.item/$AUTHORITY.$TABLE_NAME"
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
