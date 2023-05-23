@@ -2,8 +2,14 @@ package com.openclassrooms.realestatemanager.ui.add
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +20,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.asFlow
@@ -30,6 +38,7 @@ import com.openclassrooms.realestatemanager.injection.Injection
 import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.model.PropertyStatus
+import com.openclassrooms.realestatemanager.ui.MainActivity
 import com.openclassrooms.realestatemanager.ui.property.PropertyListFragmentDirections
 import com.openclassrooms.realestatemanager.utils.CheckBoxOptionProvider.getOptions
 import com.openclassrooms.realestatemanager.utils.FragmentUtils.handleBackPressed
@@ -193,6 +202,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             if (isValid) {
                 createProperty()
                 findNavController().navigate(actionFragment)
+                sendVisualNotification()
             }
             showToast(isValid)
         }
@@ -278,6 +288,62 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         } else {
             selectedPoiList.joinToString(", ")
         }
+    }
+
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private fun sendVisualNotification() {
+        val NOTIFICATION_TAG = ""
+        val NOTIFICATION_ID = 7
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        val pendingIntent =
+            PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val channelId: String = requireContext().getString(R.string.channel_id)
+        val notificationBuilder: NotificationCompat.Builder =
+            NotificationCompat.Builder(requireContext(), channelId)
+                .setSmallIcon(R.drawable.real_estate)
+                .setContentTitle(requireContext().getString(R.string.app_name))
+                .setContentText("New property added !")
+                .setAutoCancel(true)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContentIntent(pendingIntent)
+
+        val notificationManager =
+            requireContext().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Support Version >= Android 8
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelName: CharSequence = requireContext().getString(R.string.channel_name)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val mChannel = NotificationChannel(channelId, channelName, importance)
+            notificationManager.createNotificationChannel(mChannel)
+        }
+
+        // Show notification
+        notificationManager.notify(NOTIFICATION_TAG, NOTIFICATION_ID, notificationBuilder.build())
+    }
+
+
+    private fun sendNotification(content: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = "my_channel_id"
+            val channelName = "My Channel"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelId, channelName, importance)
+            val notificationManager =
+                requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notificationId = 1
+        val notificationBuilder = NotificationCompat.Builder(requireContext(), "my_channel_id")
+            .setSmallIcon(R.drawable.real_estate)
+            .setContentTitle("Nouvelle propriété ajoutée")
+            .setContentText(content)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        val notificationManager =
+            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(notificationId, notificationBuilder.build())
     }
 }
 
