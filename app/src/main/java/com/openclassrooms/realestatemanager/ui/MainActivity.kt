@@ -3,7 +3,6 @@ package com.openclassrooms.realestatemanager.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,6 @@ import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.MainActivityBinding
-import com.openclassrooms.realestatemanager.ui.dialog.PhotoDialogFragment
 import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_UPDATE_LOCATION
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.MainViewModel
@@ -26,6 +24,7 @@ import com.openclassrooms.realestatemanager.viewmodels.MainViewModel
 class MainActivity : AppCompatActivity() {
 
     private val binding by viewBinding { MainActivityBinding.inflate(it) }
+
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
