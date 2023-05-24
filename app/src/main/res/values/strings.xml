@@ -51,7 +51,8 @@
     <string name="room_number">Room number</string>
     <string name="bathroom_number">Bathroom number</string>
     <string name="bedroom_number">Bedroom number</string>
-    <string name="channel_id">my_channel_id</string>
-    <string name="channel_name">My Channel</string>
+    <string name="channel_id">com.realestatemanager</string>
+    <string name="channel_name">Real Estate Messaging</string>
+    <string name="new_property_added">New property added !</string>
 
 </resources>
