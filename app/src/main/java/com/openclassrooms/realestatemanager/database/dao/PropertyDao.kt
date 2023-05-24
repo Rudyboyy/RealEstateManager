@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.database.dao
 
+import android.database.Cursor
 import androidx.room.*
 import com.openclassrooms.realestatemanager.model.Property
 import kotlinx.coroutines.flow.Flow
@@ -17,5 +18,8 @@ interface PropertyDao {
     fun insertAll(properties: List<Property>)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(property: Property)
+    suspend fun update(property: Property): Int
+
+    @Query("SELECT * FROM realEstate WHERE property_id = :propertyId")
+    fun getPropertiesWithCursor(propertyId: Long): Cursor
 }
