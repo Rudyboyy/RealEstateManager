@@ -54,5 +54,8 @@
     <string name="channel_id">com.realestatemanager</string>
     <string name="channel_name">Real Estate Messaging</string>
     <string name="new_property_added">New property added !</string>
+    <string name="update">Update</string>
+    <string name="edit">edit</string>
+    <string name="property_updated">Property updated</string>
 
 </resources>

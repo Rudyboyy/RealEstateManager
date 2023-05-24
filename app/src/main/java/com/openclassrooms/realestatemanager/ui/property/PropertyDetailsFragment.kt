@@ -50,8 +50,8 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.bathroom.text = it.numberOfBathrooms.toString()
             binding.bedroom.text = it.numberOfBedrooms.toString()
             binding.propertyRooms.text = it.numberOfRooms.toString()
-            binding.creationDate.text = getFormatedDate(it.entryDate)
-            binding.sellDate.text = it.saleDate?.let { date -> getFormatedDate(date) }
+            binding.creationDate.text = getFormattedDate(it.entryDate)
+            binding.sellDate.text = it.saleDate?.let { date -> getFormattedDate(date) }
             binding.propertyDescription.text = it.description
             binding.surface.text = switchDoubleToInt(surfaceFormat, it.surface)
             binding.propertyStatus.text = it.status.name
@@ -59,6 +59,7 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.nestedScrollView.scrollTo(0, 0)
             initRecyclerView(it.photos)
             updateStaticMap(it)
+            setEditButton(it)
         }
     }
 
@@ -90,7 +91,7 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
 
 
     @SuppressLint("SimpleDateFormat")
-    private fun getFormatedDate(date: Date): String? {
+    private fun getFormattedDate(date: Date): String? {
         val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy")
         return dateFormat.format(date)
     }
@@ -105,5 +106,13 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             .load(url)
             .error(R.drawable.no_wifi)
             .into(binding.staticMaps)
+    }
+
+    private fun setEditButton(property: Property) {
+        binding.editButton.setOnClickListener {
+            val action =
+            PropertyListFragmentDirections.actionGlobalToAddFragment(property)
+            findNavController().navigate(action) }
+
     }
 }

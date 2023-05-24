@@ -25,7 +25,11 @@
         android:id="@+id/AddFragment"
         android:name="com.openclassrooms.realestatemanager.ui.add.AddPropertyFragment"
         android:label="Add"
-        tools:layout="@layout/add_property_fragment"/>
+        tools:layout="@layout/add_property_fragment">
+    <argument
+        android:name="property"
+        app:argType="com.openclassrooms.realestatemanager.model.Property" />
+    </fragment>
 
     <dialog
         android:id="@+id/photoSlideDialogFragment"

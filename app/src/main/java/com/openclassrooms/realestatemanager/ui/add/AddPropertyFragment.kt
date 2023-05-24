@@ -59,17 +59,49 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     private val propertyPhotos = mutableListOf<Photo>()
     private lateinit var photoAdapter: PhotoAdapter
     private lateinit var checkboxAdapter: CheckboxAdapter
+    private var isNew = true
+    private var mId: Long = 0 //todo need to do something to get a random one
 
+    //todo need to rename some function for better understanding
+    //todo need to think about what we need to update
+    //todo need to add sold button and dialog to confirm choice
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleBackPressed(actionFragment)
         initPhotoRecyclerView(propertyPhotos)
         initCheckboxRecyclerView()
-
+        setPropertyToEdit()
         setAddPhotoButton()
         setBackButton()
         setSaveButton()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun setPropertyToEdit() {
+        val property: Property? = if (Build.VERSION.SDK_INT >= 33) {
+            arguments?.getParcelable("property", Property::class.java)
+        } else {
+            arguments?.getParcelable("property")
+        }
+        if (property != null) {
+            isNew = false
+            mId = property.id
+            val poi = property.pointOfInterest.split(", ")
+            binding.saveButton.text = getString(R.string.update)
+            initPhotoRecyclerView(property.photos)
+            binding.textAgent.setText(property.agent)
+            binding.textType.setText(property.type)
+            binding.textPrice.setText(property.price.toString())
+            binding.textSurface.setText(property.surface.toString())
+            binding.numRoom.setText(property.numberOfRooms.toString())
+            binding.numBedroom.setText(property.numberOfBedrooms.toString())
+            binding.numBathroom.setText(property.numberOfBathrooms.toString())
+            binding.textDescription.setText(property.description)
+            binding.textAddress.setText(property.address)
+            checkboxAdapter.checkedItems.addAll(poi)
+
+        }
     }
 
     private fun setAddPhotoButton() {
@@ -227,7 +259,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         lifecycleScope.launch {
             combine(latFlow, lgtFlow) { lat, lgt ->
                 val property = Property(
-                    id = 0,
+                    id = mId,
                     agent = agent,
                     type = type,
                     price = price,
@@ -244,13 +276,18 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
                     longitude = lgt,
                     photos = propertyPhotos
                 )
-                viewModel.addProperty(property)
+                if (isNew) {
+                    viewModel.addProperty(property)
+                } else {
+                    viewModel.update(property)
+                }
             }.collect()
         }
     }
 
     private fun showToast(success: Boolean) {
-        var message = getString(R.string.property_created)
+        var message =
+            if (isNew) getString(R.string.property_created) else getString(R.string.property_updated)
         if (!success) {
             message = getString(R.string.missing_information)
         }
@@ -292,36 +329,38 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
 
     @SuppressLint("UnspecifiedImmutableFlag")
     private fun sendVisualNotification() {
-        val notificationId = 7
-        val intent = Intent(requireContext(), MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        if (isNew) {
+            val notificationId = 7
+            val intent = Intent(requireContext(), MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            val pendingIntent =
+                PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT)
+            val channelId: String = requireContext().getString(R.string.channel_id)
+            val notificationBuilder: NotificationCompat.Builder =
+                NotificationCompat.Builder(requireContext(), channelId)
+                    .setSmallIcon(R.drawable.real_estate)
+                    .setContentTitle(requireContext().getString(R.string.app_name))
+                    .setContentText(getString(R.string.new_property_added))
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+
+            val notificationManager =
+                requireContext().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+
+            // Support Version >= Android 8
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channelName: CharSequence = requireContext().getString(R.string.channel_name)
+                val importance = NotificationManager.IMPORTANCE_HIGH
+                val mChannel = NotificationChannel(channelId, channelName, importance)
+                notificationManager.createNotificationChannel(mChannel)
+            }
+
+            // Show notification
+            notificationManager.notify(notificationId, notificationBuilder.build())
         }
-        val pendingIntent =
-            PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT)
-        val channelId: String = requireContext().getString(R.string.channel_id)
-        val notificationBuilder: NotificationCompat.Builder =
-            NotificationCompat.Builder(requireContext(), channelId)
-                .setSmallIcon(R.drawable.real_estate)
-                .setContentTitle(requireContext().getString(R.string.app_name))
-                .setContentText(getString(R.string.new_property_added))
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-
-        val notificationManager =
-            requireContext().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
-
-        // Support Version >= Android 8
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelName: CharSequence = requireContext().getString(R.string.channel_name)
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val mChannel = NotificationChannel(channelId, channelName, importance)
-            notificationManager.createNotificationChannel(mChannel)
-        }
-
-        // Show notification
-        notificationManager.notify(notificationId, notificationBuilder.build())
     }
 }
 
