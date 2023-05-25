@@ -339,7 +339,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/delete_outline/baseline_delete_outline_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/delete_forever/baseline_delete_forever_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -350,7 +350,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="af0000" />
-                            <entry key="outputName" value="ic_baseline_delete_outline_24" />
+                            <entry key="outputName" value="ic_baseline_delete_forever_24" />
                             <entry key="sourceFile" value="D:\dossier bureau\Openclassrooms\AndroidStudioProjects\RealEstateManager" />
                           </map>
                         </option>

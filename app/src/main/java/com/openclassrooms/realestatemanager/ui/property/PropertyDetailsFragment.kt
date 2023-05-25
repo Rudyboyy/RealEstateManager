@@ -74,17 +74,20 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
     }
 
     private fun initRecyclerView(photos: List<Photo>) {
-        val adapter = PhotoAdapter { position ->
-            val photoUris = photos.map { it.uri }
-            val photoDescriptions = photos.map { it.description }
-            val action =
-                PropertyListFragmentDirections.actionPropertyListFragmentToImageSlideDialogFragment(
-                    photoUris.toTypedArray(),
-                    photoDescriptions.toTypedArray(),
-                    position
-                )
-            findNavController().navigate(action)
-        }
+        val adapter = PhotoAdapter(
+            onItemClicked = { position ->
+                val photoUris = photos.map { it.uri }
+                val photoDescriptions = photos.map { it.description }
+                val action =
+                    PropertyListFragmentDirections.actionPropertyListFragmentToImageSlideDialogFragment(
+                        photoUris.toTypedArray(),
+                        photoDescriptions.toTypedArray(),
+                        position
+                    )
+                findNavController().navigate(action)
+            },
+            onItemDeleteClicked = {}
+        )
         binding.imageRecyclerview.adapter = adapter
         adapter.submitList(photos)
     }
@@ -111,8 +114,9 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
     private fun setEditButton(property: Property) {
         binding.editButton.setOnClickListener {
             val action =
-            PropertyListFragmentDirections.actionGlobalToAddFragment(property)
-            findNavController().navigate(action) }
+                PropertyListFragmentDirections.actionGlobalToAddFragment(property)
+            findNavController().navigate(action)
+        }
 
     }
 }

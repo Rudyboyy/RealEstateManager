@@ -89,7 +89,8 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             mId = property.id
             val poi = property.pointOfInterest.split(", ")
             binding.saveButton.text = getString(R.string.update)
-            initPhotoRecyclerView(property.photos)
+            propertyPhotos.addAll(property.photos)
+            initPhotoRecyclerView(propertyPhotos)
             binding.textAgent.setText(property.agent)
             binding.textType.setText(property.type)
             binding.textPrice.setText(property.price.toString())
@@ -130,18 +131,25 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     }
 
     private fun initPhotoRecyclerView(photos: List<Photo>) {
-        photoAdapter = PhotoAdapter { position ->
-            val photoUris = photos.map { it.uri }
-            val photoDescriptions = photos.map { it.description }
-            val action =
-                PropertyListFragmentDirections.actionPropertyListFragmentToImageSlideDialogFragment(
-                    photoUris.toTypedArray(),
-                    photoDescriptions.toTypedArray(),
-                    position
-                )
-            findNavController().navigate(action)
-        }
+        photoAdapter = PhotoAdapter(
+            onItemClicked = { position ->
+                val photoUris = photos.map { it.uri }
+                val photoDescriptions = photos.map { it.description }
+                val action =
+                    AddPropertyFragmentDirections.actionGlobalToImageSlideDialogFragment(
+                        photoUris.toTypedArray(),
+                        photoDescriptions.toTypedArray(),
+                        position
+                    )
+                findNavController().navigate(action)
+            },
+            onItemDeleteClicked = {
+                propertyPhotos.removeAt(it)
+                photoAdapter.notifyItemRemoved(it)
+            }
+        )
         binding.addPhotoRecyclerview.adapter = photoAdapter
+        photoAdapter.setInAddFragment(true)
         photoAdapter.submitList(photos)
     }
 
