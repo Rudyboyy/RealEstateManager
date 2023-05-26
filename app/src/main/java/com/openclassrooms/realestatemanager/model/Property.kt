@@ -19,7 +19,7 @@ import java.util.*
 data class Property(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "property_id")
-    val id: Long = 0,
+    val id: Long,
     @ColumnInfo(name = "agent")
     val agent: String,
     @ColumnInfo(name = "type")
@@ -115,6 +115,7 @@ data class Property(
         }
 
         fun fromContentValues(values: ContentValues): Property {
+            val id = values.getAsLong("property_id") ?: 0L
             val agent = values.getAsString("agent")
             val type = values.getAsString("type")
             val price = values.getAsDouble("price")
@@ -136,6 +137,7 @@ data class Property(
             val photoList = photoListConverter.toPhotoList(photoListString)
 
             return Property(
+                id = id,
                 agent = agent,
                 type = type,
                 price = price,

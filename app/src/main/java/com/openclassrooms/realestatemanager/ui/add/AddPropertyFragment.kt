@@ -58,7 +58,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     private lateinit var photoAdapter: PhotoAdapter
     private lateinit var checkboxAdapter: CheckboxAdapter
     private var isNew = true
-    private var mId: Long = 0 //todo need to do something to get a random one
+    private var mId: Long = 0
     private var currentProperty: Property? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
