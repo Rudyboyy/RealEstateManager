@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_PropertyListFragment_to_imageSlideDialogFragment"
             app:destination="@id/photoSlideDialogFragment" />
+        <argument
+            android:name="property"
+            app:argType="com.openclassrooms.realestatemanager.model.Property" />
     </fragment>
 
     <fragment
