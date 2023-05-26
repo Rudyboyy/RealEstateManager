@@ -1,10 +1,7 @@
 package com.openclassrooms.realestatemanager.ui.add
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
@@ -15,6 +12,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -39,7 +37,6 @@ import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.model.PropertyStatus
 import com.openclassrooms.realestatemanager.ui.MainActivity
-import com.openclassrooms.realestatemanager.ui.property.PropertyListFragmentDirections
 import com.openclassrooms.realestatemanager.utils.CheckBoxOptionProvider.getOptions
 import com.openclassrooms.realestatemanager.utils.FragmentUtils.handleBackPressed
 import com.openclassrooms.realestatemanager.utils.viewBinding
@@ -47,6 +44,7 @@ import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
@@ -61,10 +59,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     private lateinit var checkboxAdapter: CheckboxAdapter
     private var isNew = true
     private var mId: Long = 0 //todo need to do something to get a random one
-
-    //todo need to rename some function for better understanding
-    //todo need to think about what we need to update
-    //todo need to add sold button and dialog to confirm choice
+    private var currentProperty: Property? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,6 +70,61 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         setAddPhotoButton()
         setBackButton()
         setSaveButton()
+        setSoldButton()
+    }
+
+    private fun setSoldButton() {
+        if (!isNew) {
+            binding.soldButton.visibility = View.VISIBLE
+            binding.soldButton.setOnClickListener {
+                showDatePickerDialog()
+            }
+        } else {
+            binding.soldButton.visibility = View.GONE
+        }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val mYear = calendar.get(Calendar.YEAR)
+        val mMonth = calendar.get(Calendar.MONTH)
+        val mDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, monthOfYear, dayOfMonth)
+                val date = selectedDate.time
+                handleSelectedDate(date)
+            },
+            mYear,
+            mMonth,
+            mDay
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun handleSelectedDate(date: Date) {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formattedDate = dateFormat.format(date)
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.confirmation))
+            .setMessage(getString(R.string.confirmation_message, formattedDate))
+            .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+                val updateProperty =
+                    currentProperty?.copy(saleDate = date, status = PropertyStatus.SOLD)
+                if (updateProperty != null) {
+                    viewModel.update(updateProperty)
+                    findNavController().navigate(actionFragment)
+                    showToast(true)
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+
+        alertDialog.show()
     }
 
     @Suppress("DEPRECATION")
@@ -85,6 +135,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             arguments?.getParcelable("property")
         }
         if (property != null) {
+            currentProperty = property
             isNew = false
             mId = property.id
             val poi = property.pointOfInterest.split(", ")
@@ -101,7 +152,6 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             binding.textDescription.setText(property.description)
             binding.textAddress.setText(property.address)
             checkboxAdapter.checkedItems.addAll(poi)
-
         }
     }
 
@@ -240,7 +290,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             }
 
             if (isValid) {
-                createProperty()
+                saveProperty()
                 findNavController().navigate(actionFragment)
                 sendVisualNotification()
             }
@@ -248,7 +298,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         }
     }
 
-    private fun createProperty() {
+    private fun saveProperty() {
         setDoubleFormat(binding.textSurface)
         setDoubleFormat(binding.textPrice)
         val agent = "${binding.textAgent.text}"

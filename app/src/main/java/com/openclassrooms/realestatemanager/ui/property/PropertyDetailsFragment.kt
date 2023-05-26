@@ -13,6 +13,7 @@ import com.openclassrooms.realestatemanager.databinding.PropertyDetailsFragmentB
 import com.openclassrooms.realestatemanager.injection.Injection
 import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
+import com.openclassrooms.realestatemanager.model.PropertyStatus
 import com.openclassrooms.realestatemanager.utils.Constants.BASE_URL_STATIC_MAP
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_MARKER_TYPE
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_ZOOM_AND_SIZE
@@ -112,10 +113,17 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
     }
 
     private fun setEditButton(property: Property) {
-        binding.editButton.setOnClickListener {
-            val action =
-                PropertyListFragmentDirections.actionGlobalToAddFragment(property)
-            findNavController().navigate(action)
+        if (property.status == PropertyStatus.AVAILABLE) {
+            binding.editButton.visibility = View.VISIBLE
+            binding.textEdit.visibility = View.VISIBLE
+            binding.editButton.setOnClickListener {
+                val action =
+                    PropertyListFragmentDirections.actionGlobalToAddFragment(property)
+                findNavController().navigate(action)
+            }
+        } else {
+            binding.editButton.visibility = View.GONE
+            binding.textEdit.visibility = View.GONE
         }
 
     }

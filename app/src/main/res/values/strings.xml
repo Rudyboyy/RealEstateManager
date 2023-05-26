@@ -57,5 +57,10 @@
     <string name="update">Update</string>
     <string name="edit">edit</string>
     <string name="property_updated">Property updated</string>
+    <string name="mark_as_sold">MARK AS SOLD</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirmation_message">Once confirmed, the property will be marked as sold on %1$s and cannot be edited.</string>
+
 
 </resources>

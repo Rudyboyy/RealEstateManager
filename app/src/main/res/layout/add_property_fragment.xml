@@ -10,6 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sold_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/textFieldAgent"
+            android:text="@string/mark_as_sold"
+            android:textColor="@color/white"
+            android:backgroundTint="#ea0000"
+            android:visibility="gone" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textFieldAgent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
