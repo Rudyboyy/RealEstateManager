@@ -1,20 +1,25 @@
 package com.openclassrooms.realestatemanager.model
 
 import android.content.ContentValues
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.PropertyStatus
 import com.openclassrooms.realestatemanager.utils.PhotoListConverter
+import kotlinx.parcelize.Parceler
+import kotlinx.parcelize.Parcelize
 import org.json.JSONArray
 import java.util.*
 
 @Entity(tableName = "realEstate")
+@Parcelize
 data class Property(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "property_id")
-    val id: Long = 0,
+    val id: Long,
     @ColumnInfo(name = "agent")
     val agent: String,
     @ColumnInfo(name = "type")
@@ -47,9 +52,70 @@ data class Property(
     val latitude: Double?,
     @ColumnInfo(name = "longitude")
     val longitude: Double?,
-) {
-    companion object {
+) : Parcelable {
+    companion object : Parceler<Property> {
+        override fun Property.write(parcel: Parcel, flags: Int) {
+            parcel.writeLong(id)
+            parcel.writeString(agent)
+            parcel.writeString(type)
+            parcel.writeDouble(price)
+            parcel.writeString(description)
+            parcel.writeString(address)
+            parcel.writeString(status.name)
+            parcel.writeInt(numberOfRooms)
+            parcel.writeInt(numberOfBedrooms)
+            parcel.writeInt(numberOfBathrooms)
+            parcel.writeDouble(surface)
+            parcel.writeString(pointOfInterest)
+            parcel.writeLong(entryDate.time)
+            parcel.writeLong(saleDate?.time ?: -1L)
+            parcel.writeTypedList(photos)
+            parcel.writeDouble(latitude ?: 0.0)
+            parcel.writeDouble(longitude ?: 0.0)
+        }
+
+        override fun create(parcel: Parcel): Property {
+            val id = parcel.readLong()
+            val agent = parcel.readString() ?: ""
+            val type = parcel.readString() ?: ""
+            val price = parcel.readDouble()
+            val description = parcel.readString() ?: ""
+            val address = parcel.readString() ?: ""
+            val status = PropertyStatus.valueOf(parcel.readString() ?: "")
+            val numberOfRooms = parcel.readInt()
+            val numberOfBedrooms = parcel.readInt()
+            val numberOfBathrooms = parcel.readInt()
+            val surface = parcel.readDouble()
+            val pointOfInterest = parcel.readString() ?: ""
+            val entryDate = Date(parcel.readLong())
+            val saleDate = parcel.readLong().let { if (it != -1L) Date(it) else null }
+            val photos = parcel.createTypedArrayList(Photo.CREATOR) ?: emptyList()
+            val latitude = parcel.readDouble()
+            val longitude = parcel.readDouble()
+
+            return Property(
+                id = id,
+                agent = agent,
+                type = type,
+                price = price,
+                description = description,
+                address = address,
+                status = status,
+                numberOfRooms = numberOfRooms,
+                numberOfBedrooms = numberOfBedrooms,
+                numberOfBathrooms = numberOfBathrooms,
+                surface = surface,
+                pointOfInterest = pointOfInterest,
+                entryDate = entryDate,
+                saleDate = saleDate,
+                photos = photos,
+                latitude = latitude,
+                longitude = longitude
+            )
+        }
+
         fun fromContentValues(values: ContentValues): Property {
+            val id = values.getAsLong("property_id") ?: 0L
             val agent = values.getAsString("agent")
             val type = values.getAsString("type")
             val price = values.getAsDouble("price")
@@ -71,6 +137,7 @@ data class Property(
             val photoList = photoListConverter.toPhotoList(photoListString)
 
             return Property(
+                id = id,
                 agent = agent,
                 type = type,
                 price = price,

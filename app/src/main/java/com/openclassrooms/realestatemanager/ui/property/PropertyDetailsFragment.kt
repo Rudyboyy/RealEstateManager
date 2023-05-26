@@ -13,6 +13,7 @@ import com.openclassrooms.realestatemanager.databinding.PropertyDetailsFragmentB
 import com.openclassrooms.realestatemanager.injection.Injection
 import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
+import com.openclassrooms.realestatemanager.model.PropertyStatus
 import com.openclassrooms.realestatemanager.utils.Constants.BASE_URL_STATIC_MAP
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_MARKER_TYPE
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_ZOOM_AND_SIZE
@@ -50,8 +51,8 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.bathroom.text = it.numberOfBathrooms.toString()
             binding.bedroom.text = it.numberOfBedrooms.toString()
             binding.propertyRooms.text = it.numberOfRooms.toString()
-            binding.creationDate.text = getFormatedDate(it.entryDate)
-            binding.sellDate.text = it.saleDate?.let { date -> getFormatedDate(date) }
+            binding.creationDate.text = getFormattedDate(it.entryDate)
+            binding.sellDate.text = it.saleDate?.let { date -> getFormattedDate(date) }
             binding.propertyDescription.text = it.description
             binding.surface.text = switchDoubleToInt(surfaceFormat, it.surface)
             binding.propertyStatus.text = it.status.name
@@ -59,6 +60,7 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.nestedScrollView.scrollTo(0, 0)
             initRecyclerView(it.photos)
             updateStaticMap(it)
+            setEditButton(it)
         }
     }
 
@@ -73,24 +75,27 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
     }
 
     private fun initRecyclerView(photos: List<Photo>) {
-        val adapter = PhotoAdapter { position ->
-            val photoUris = photos.map { it.uri }
-            val photoDescriptions = photos.map { it.description }
-            val action =
-                PropertyListFragmentDirections.actionPropertyListFragmentToImageSlideDialogFragment(
-                    photoUris.toTypedArray(),
-                    photoDescriptions.toTypedArray(),
-                    position
-                )
-            findNavController().navigate(action)
-        }
+        val adapter = PhotoAdapter(
+            onItemClicked = { position ->
+                val photoUris = photos.map { it.uri }
+                val photoDescriptions = photos.map { it.description }
+                val action =
+                    PropertyListFragmentDirections.actionPropertyListFragmentToImageSlideDialogFragment(
+                        photoUris.toTypedArray(),
+                        photoDescriptions.toTypedArray(),
+                        position
+                    )
+                findNavController().navigate(action)
+            },
+            onItemDeleteClicked = {}
+        )
         binding.imageRecyclerview.adapter = adapter
         adapter.submitList(photos)
     }
 
 
     @SuppressLint("SimpleDateFormat")
-    private fun getFormatedDate(date: Date): String? {
+    private fun getFormattedDate(date: Date): String? {
         val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy")
         return dateFormat.format(date)
     }
@@ -105,5 +110,21 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             .load(url)
             .error(R.drawable.no_wifi)
             .into(binding.staticMaps)
+    }
+
+    private fun setEditButton(property: Property) {
+        if (property.status == PropertyStatus.AVAILABLE) {
+            binding.editButton.visibility = View.VISIBLE
+            binding.textEdit.visibility = View.VISIBLE
+            binding.editButton.setOnClickListener {
+                val action =
+                    PropertyListFragmentDirections.actionGlobalToAddFragment(property)
+                findNavController().navigate(action)
+            }
+        } else {
+            binding.editButton.visibility = View.GONE
+            binding.textEdit.visibility = View.GONE
+        }
+
     }
 }

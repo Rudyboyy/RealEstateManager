@@ -1,10 +1,7 @@
 package com.openclassrooms.realestatemanager.ui.add
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
@@ -15,6 +12,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -39,7 +37,6 @@ import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.model.PropertyStatus
 import com.openclassrooms.realestatemanager.ui.MainActivity
-import com.openclassrooms.realestatemanager.ui.property.PropertyListFragmentDirections
 import com.openclassrooms.realestatemanager.utils.CheckBoxOptionProvider.getOptions
 import com.openclassrooms.realestatemanager.utils.FragmentUtils.handleBackPressed
 import com.openclassrooms.realestatemanager.utils.viewBinding
@@ -47,6 +44,7 @@ import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
@@ -59,17 +57,102 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     private val propertyPhotos = mutableListOf<Photo>()
     private lateinit var photoAdapter: PhotoAdapter
     private lateinit var checkboxAdapter: CheckboxAdapter
-
+    private var isNew = true
+    private var mId: Long = 0
+    private var currentProperty: Property? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleBackPressed(actionFragment)
         initPhotoRecyclerView(propertyPhotos)
         initCheckboxRecyclerView()
-
+        setPropertyToEdit()
         setAddPhotoButton()
         setBackButton()
         setSaveButton()
+        setSoldButton()
+    }
+
+    private fun setSoldButton() {
+        if (!isNew) {
+            binding.soldButton.visibility = View.VISIBLE
+            binding.soldButton.setOnClickListener {
+                showDatePickerDialog()
+            }
+        } else {
+            binding.soldButton.visibility = View.GONE
+        }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val mYear = calendar.get(Calendar.YEAR)
+        val mMonth = calendar.get(Calendar.MONTH)
+        val mDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, monthOfYear, dayOfMonth)
+                val date = selectedDate.time
+                handleSelectedDate(date)
+            },
+            mYear,
+            mMonth,
+            mDay
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun handleSelectedDate(date: Date) {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formattedDate = dateFormat.format(date)
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.confirmation))
+            .setMessage(getString(R.string.confirmation_message, formattedDate))
+            .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+                val updateProperty =
+                    currentProperty?.copy(saleDate = date, status = PropertyStatus.SOLD)
+                if (updateProperty != null) {
+                    viewModel.update(updateProperty)
+                    findNavController().navigate(actionFragment)
+                    showToast(true)
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+
+        alertDialog.show()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun setPropertyToEdit() {
+        val property: Property? = if (Build.VERSION.SDK_INT >= 33) {
+            arguments?.getParcelable("property", Property::class.java)
+        } else {
+            arguments?.getParcelable("property")
+        }
+        if (property != null) {
+            currentProperty = property
+            isNew = false
+            mId = property.id
+            val poi = property.pointOfInterest.split(", ")
+            binding.saveButton.text = getString(R.string.update)
+            propertyPhotos.addAll(property.photos)
+            initPhotoRecyclerView(propertyPhotos)
+            binding.textAgent.setText(property.agent)
+            binding.textType.setText(property.type)
+            binding.textPrice.setText(property.price.toString())
+            binding.textSurface.setText(property.surface.toString())
+            binding.numRoom.setText(property.numberOfRooms.toString())
+            binding.numBedroom.setText(property.numberOfBedrooms.toString())
+            binding.numBathroom.setText(property.numberOfBathrooms.toString())
+            binding.textDescription.setText(property.description)
+            binding.textAddress.setText(property.address)
+            checkboxAdapter.checkedItems.addAll(poi)
+        }
     }
 
     private fun setAddPhotoButton() {
@@ -98,18 +181,25 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     }
 
     private fun initPhotoRecyclerView(photos: List<Photo>) {
-        photoAdapter = PhotoAdapter { position ->
-            val photoUris = photos.map { it.uri }
-            val photoDescriptions = photos.map { it.description }
-            val action =
-                PropertyListFragmentDirections.actionPropertyListFragmentToImageSlideDialogFragment(
-                    photoUris.toTypedArray(),
-                    photoDescriptions.toTypedArray(),
-                    position
-                )
-            findNavController().navigate(action)
-        }
+        photoAdapter = PhotoAdapter(
+            onItemClicked = { position ->
+                val photoUris = photos.map { it.uri }
+                val photoDescriptions = photos.map { it.description }
+                val action =
+                    AddPropertyFragmentDirections.actionGlobalToImageSlideDialogFragment(
+                        photoUris.toTypedArray(),
+                        photoDescriptions.toTypedArray(),
+                        position
+                    )
+                findNavController().navigate(action)
+            },
+            onItemDeleteClicked = {
+                propertyPhotos.removeAt(it)
+                photoAdapter.notifyItemRemoved(it)
+            }
+        )
         binding.addPhotoRecyclerview.adapter = photoAdapter
+        photoAdapter.setInAddFragment(true)
         photoAdapter.submitList(photos)
     }
 
@@ -200,7 +290,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             }
 
             if (isValid) {
-                createProperty()
+                saveProperty()
                 findNavController().navigate(actionFragment)
                 sendVisualNotification()
             }
@@ -208,7 +298,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         }
     }
 
-    private fun createProperty() {
+    private fun saveProperty() {
         setDoubleFormat(binding.textSurface)
         setDoubleFormat(binding.textPrice)
         val agent = "${binding.textAgent.text}"
@@ -227,7 +317,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         lifecycleScope.launch {
             combine(latFlow, lgtFlow) { lat, lgt ->
                 val property = Property(
-                    id = 0,
+                    id = mId,
                     agent = agent,
                     type = type,
                     price = price,
@@ -244,13 +334,18 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
                     longitude = lgt,
                     photos = propertyPhotos
                 )
-                viewModel.addProperty(property)
+                if (isNew) {
+                    viewModel.addProperty(property)
+                } else {
+                    viewModel.update(property)
+                }
             }.collect()
         }
     }
 
     private fun showToast(success: Boolean) {
-        var message = getString(R.string.property_created)
+        var message =
+            if (isNew) getString(R.string.property_created) else getString(R.string.property_updated)
         if (!success) {
             message = getString(R.string.missing_information)
         }
@@ -292,36 +387,38 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
 
     @SuppressLint("UnspecifiedImmutableFlag")
     private fun sendVisualNotification() {
-        val notificationId = 7
-        val intent = Intent(requireContext(), MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        if (isNew) {
+            val notificationId = 7
+            val intent = Intent(requireContext(), MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            val pendingIntent =
+                PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT)
+            val channelId: String = requireContext().getString(R.string.channel_id)
+            val notificationBuilder: NotificationCompat.Builder =
+                NotificationCompat.Builder(requireContext(), channelId)
+                    .setSmallIcon(R.drawable.real_estate)
+                    .setContentTitle(requireContext().getString(R.string.app_name))
+                    .setContentText(getString(R.string.new_property_added))
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+
+            val notificationManager =
+                requireContext().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+
+            // Support Version >= Android 8
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channelName: CharSequence = requireContext().getString(R.string.channel_name)
+                val importance = NotificationManager.IMPORTANCE_HIGH
+                val mChannel = NotificationChannel(channelId, channelName, importance)
+                notificationManager.createNotificationChannel(mChannel)
+            }
+
+            // Show notification
+            notificationManager.notify(notificationId, notificationBuilder.build())
         }
-        val pendingIntent =
-            PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT)
-        val channelId: String = requireContext().getString(R.string.channel_id)
-        val notificationBuilder: NotificationCompat.Builder =
-            NotificationCompat.Builder(requireContext(), channelId)
-                .setSmallIcon(R.drawable.real_estate)
-                .setContentTitle(requireContext().getString(R.string.app_name))
-                .setContentText(getString(R.string.new_property_added))
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-
-        val notificationManager =
-            requireContext().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
-
-        // Support Version >= Android 8
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelName: CharSequence = requireContext().getString(R.string.channel_name)
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val mChannel = NotificationChannel(channelId, channelName, importance)
-            notificationManager.createNotificationChannel(mChannel)
-        }
-
-        // Show notification
-        notificationManager.notify(notificationId, notificationBuilder.build())
     }
 }
 

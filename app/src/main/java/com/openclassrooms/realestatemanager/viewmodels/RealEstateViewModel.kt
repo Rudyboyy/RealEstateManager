@@ -48,9 +48,7 @@ class RealEstateViewModel(
     }
 
     fun update(property: Property) {
-        viewModelScope.launch {
-            repository.update(property)
-        }
+        executor.execute { viewModelScope.launch { repository.update(property) } }
     }
 
     fun updateCoordinatesFromAddress(property: Property, address: String) {
@@ -62,6 +60,6 @@ class RealEstateViewModel(
     }
 
     fun addProperty(property: Property) {
-            executor.execute { viewModelScope.launch {repository.invoke(property) } }
+        executor.execute { viewModelScope.launch { repository.invoke(property) } }
     }
 }

@@ -69,7 +69,7 @@ class DummyRealEstateProvider {
                 numberOfBedrooms = 4,
                 numberOfBathrooms = 2,
                 surface = 70.0,
-                pointOfInterest = "school, pharmacy, gym",
+                pointOfInterest = "school, pharmacy, gym",//todo need to add uppercase to the first letter
                 entryDate = entryDate.time,
                 saleDate = saleDate.time,
                 latitude = 40.7128,
