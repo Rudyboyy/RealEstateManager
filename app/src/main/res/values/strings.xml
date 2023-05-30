@@ -64,6 +64,15 @@
     <string name="interest_rate">Interest Rate (%)</string>
     <string name="loan_term_years">Loan Term (Years)</string>
     <string name="loan_amount">Loan Amount</string>
+    <string name="monthly_payment">Monthly payment</string>
+    <string name="payment_per_month">%s $ per month</string>
+    <string name="interest_rate_value">%.2f %%</string>
+    <string name="loan_term">%d years</string>
+    <string name="min_per_month">4 167 $ per month</string>
+    <string name="min_interest_rate">0.00 %</string>
+    <string name="min_term_years">2 years</string>
+    <string name="total_interest">Cost of loan %s $</string>
+    <string name="min_cost_of_loan">Cost of loan 0 $</string>
 
 
 </resources>

@@ -34,6 +34,13 @@
         app:argType="com.openclassrooms.realestatemanager.model.Property" />
     </fragment>
 
+    <fragment
+        android:id="@+id/LoanCalculatorFragment"
+        android:name="com.openclassrooms.realestatemanager.ui.loancalculator.LoanCalculatorFragment"
+        android:label="Loan calculator"
+        tools:layout="@layout/loan_calculator_fragment"/>
+
+
     <dialog
         android:id="@+id/photoSlideDialogFragment"
         android:name="com.openclassrooms.realestatemanager.ui.dialog.PhotoDialogFragment"
@@ -67,6 +74,12 @@
     <action
         android:id="@+id/action_global_to_imageSlideDialogFragment"
         app:destination="@id/photoSlideDialogFragment"
+        app:enterAnim="@android:anim/fade_in"
+        app:exitAnim="@android:anim/fade_out" />
+
+    <action
+        android:id="@+id/action_global_to_loanCalculatorFragment"
+        app:destination="@id/LoanCalculatorFragment"
         app:enterAnim="@android:anim/fade_in"
         app:exitAnim="@android:anim/fade_out" />
 

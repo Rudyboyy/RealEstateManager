@@ -21,6 +21,8 @@ import com.openclassrooms.realestatemanager.utils.Constants.MAPS_API_KEY
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 import java.text.DateFormat
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,13 +42,12 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
         val priceFormatResId =
             if (false) R.string.price_format_eur else R.string.price_format_dollar
         //todo change false to a val currentCurrency: Boolean to get the current currency
-        val priceFormat = getString(priceFormatResId)
         val surfaceFormat = getString(R.string.square_meters)
         viewModel.selectedProperty.observe(this.viewLifecycleOwner) {
             binding.address.text = it.address
             binding.propertyType.text = it.type
             binding.pointOfInterest.text = it.pointOfInterest
-            binding.propertyPrice.text = switchDoubleToInt(priceFormat, it.price)
+            binding.propertyPrice.text = getString(priceFormatResId, formatAmount(it.price))
             binding.agent.text = it.agent
             binding.bathroom.text = it.numberOfBathrooms.toString()
             binding.bedroom.text = it.numberOfBedrooms.toString()
@@ -62,6 +63,11 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             updateStaticMap(it)
             setEditButton(it)
         }
+    }
+
+    private fun formatAmount(amount: Double): String {
+        val numberFormat = NumberFormat.getNumberInstance(Locale.getDefault())
+        return numberFormat.format(amount)
     }
 
     private fun switchDoubleToInt(format: String, double: Double): String {

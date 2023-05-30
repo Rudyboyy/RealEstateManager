@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment_main) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.PropertyListFragment, R.id.MapFragment, R.id.AddFragment
+            R.id.PropertyListFragment, R.id.MapFragment, R.id.AddFragment, R.id.LoanCalculatorFragment
         )
             .setOpenableLayout(binding.drawerLayout)
             .build()
@@ -87,7 +87,9 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_item_mortgage_calculator -> {
-                    // Naviguer vers le simulateur de prêt immobilier
+                    if (currentDestination != R.id.LoanCalculatorFragment) {
+                        navController.navigate(R.id.action_global_to_loanCalculatorFragment)
+                    }
                     true
                 }
                 else -> false
