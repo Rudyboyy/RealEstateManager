@@ -61,6 +61,9 @@
     <string name="confirmation">Confirmation</string>
     <string name="confirm">Confirm</string>
     <string name="confirmation_message">Once confirmed, the property will be marked as sold on %1$s and cannot be edited.</string>
+    <string name="interest_rate">Interest Rate (%)</string>
+    <string name="loan_term_years">Loan Term (Years)</string>
+    <string name="loan_amount">Loan Amount</string>
 
 
 </resources>
