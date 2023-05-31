@@ -151,6 +151,9 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             binding.numBathroom.setText(property.numberOfBathrooms.toString())
             binding.textDescription.setText(property.description)
             binding.textAddress.setText(property.address)
+            binding.textCity.setText(property.city)
+            binding.textPostalCode.setText(property.postalCode)
+            binding.textCountry.setText(property.country)
             checkboxAdapter.checkedItems.addAll(poi)
         }
     }
@@ -319,7 +322,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         val latFlow = viewModel.latitude.asFlow()
         val lgtFlow = viewModel.longitude.asFlow()
         val poi = getPoi()
-        viewModel.updateCoordinatesFromAddress(address)
+        viewModel.updateCoordinatesFromAddress("$address, $postalCode, $country")
         lifecycleScope.launch {
             combine(latFlow, lgtFlow) { lat, lgt ->
                 val property = Property(

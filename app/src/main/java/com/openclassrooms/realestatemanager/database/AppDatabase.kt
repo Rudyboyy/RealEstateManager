@@ -14,7 +14,7 @@ import com.openclassrooms.realestatemanager.utils.PhotoListConverter
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-@Database(entities = [Property::class], version = 2, exportSchema = false)
+@Database(entities = [Property::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class, PhotoListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -38,7 +38,6 @@ abstract class AppDatabase : RoomDatabase() {
                     "realEstate_database"
                 )
                     .addCallback(mRoomDatabaseCallBack)
-                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance
