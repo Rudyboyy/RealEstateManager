@@ -30,6 +30,12 @@ data class Property(
     val description: String,
     @ColumnInfo(name = "address")
     val address: String,
+    @ColumnInfo(name = "city")
+    val city: String,
+    @ColumnInfo(name = "postal_code")
+    val postalCode: String,
+    @ColumnInfo(name = "country")
+    val country: String,
     @ColumnInfo(name = "status")
     val status: PropertyStatus,
     @ColumnInfo(name = "number_of_rooms")
@@ -61,6 +67,9 @@ data class Property(
             parcel.writeDouble(price)
             parcel.writeString(description)
             parcel.writeString(address)
+            parcel.writeString(city)
+            parcel.writeString(postalCode)
+            parcel.writeString(country)
             parcel.writeString(status.name)
             parcel.writeInt(numberOfRooms)
             parcel.writeInt(numberOfBedrooms)
@@ -81,6 +90,9 @@ data class Property(
             val price = parcel.readDouble()
             val description = parcel.readString() ?: ""
             val address = parcel.readString() ?: ""
+            val city = parcel.readString() ?: ""
+            val postalCode = parcel.readString() ?: ""
+            val country = parcel.readString() ?: ""
             val status = PropertyStatus.valueOf(parcel.readString() ?: "")
             val numberOfRooms = parcel.readInt()
             val numberOfBedrooms = parcel.readInt()
@@ -100,6 +112,9 @@ data class Property(
                 price = price,
                 description = description,
                 address = address,
+                city = city,
+                postalCode = postalCode,
+                country = country,
                 status = status,
                 numberOfRooms = numberOfRooms,
                 numberOfBedrooms = numberOfBedrooms,
@@ -121,6 +136,9 @@ data class Property(
             val price = values.getAsDouble("price")
             val description = values.getAsString("description")
             val address = values.getAsString("address")
+            val city = values.getAsString("city")
+            val postalCode = values.getAsString("postal_code")
+            val country = values.getAsString("country")
             val status = PropertyStatus.valueOf(values.getAsString("status"))
             val numberOfRooms = values.getAsInteger("number_of_rooms")
             val numberOfBedrooms = values.getAsInteger("number_of_bedrooms")
@@ -143,6 +161,9 @@ data class Property(
                 price = price,
                 description = description,
                 address = address,
+                city = city,
+                postalCode = postalCode,
+                country = country,
                 status = status,
                 numberOfRooms = numberOfRooms,
                 numberOfBedrooms = numberOfBedrooms,
@@ -157,5 +178,10 @@ data class Property(
             )
         }
     }
+
+    val fullAddress: String
+        get() {
+            return "${address},${postalCode},${country}"
+        }
 }
 

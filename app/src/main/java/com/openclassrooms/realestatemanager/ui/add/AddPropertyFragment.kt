@@ -273,7 +273,10 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             binding.numBathroom to binding.textFieldBathroom,
             binding.numBedroom to binding.textFieldBedroom,
             binding.textDescription to binding.textFieldDescription,
-            binding.textAddress to binding.textFieldAddress
+            binding.textAddress to binding.textFieldAddress,
+            binding.textCity to binding.textFieldCity,
+            binding.textPostalCode to binding.textFieldPostalCode,
+            binding.textCountry to binding.textFieldCountry
         )
 
         binding.saveButton.setOnClickListener {
@@ -306,6 +309,9 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         val price = binding.textPrice.text.toString().toDouble()
         val description = "${binding.textDescription.text}"
         val address = "${binding.textAddress.text}"
+        val city = "${binding.textCity.text}"
+        val postalCode = "${binding.textPostalCode.text}"
+        val country = "${binding.textCountry.text}"
         val numRoom = binding.numRoom.text.toString().toInt()
         val numBedroom = binding.numBedroom.text.toString().toInt()
         val numBathroom = binding.numBathroom.text.toString().toInt()
@@ -322,7 +328,10 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
                     type = type,
                     price = price,
                     description = description,
-                    address = address,//todo need to change the way to get the address with postal code country city etc to get the right position with geocoding
+                    address = address,
+                    city = city,
+                    postalCode = postalCode,
+                    country = country,//todo need to change the way to get the address with postal code country city etc to get the right position with geocoding
                     status = PropertyStatus.AVAILABLE,
                     numberOfRooms = numRoom,
                     numberOfBedrooms = numBedroom,
