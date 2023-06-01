@@ -44,7 +44,7 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
         //todo change false to a val currentCurrency: Boolean to get the current currency
         val surfaceFormat = getString(R.string.square_meters)
         viewModel.selectedProperty.observe(this.viewLifecycleOwner) {
-            binding.address.text = it.address
+            binding.address.text = it.fullAddress
             binding.propertyType.text = it.type
             binding.pointOfInterest.text = it.pointOfInterest
             binding.propertyPrice.text = getString(priceFormatResId, formatAmount(it.price))
