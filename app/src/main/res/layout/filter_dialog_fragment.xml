@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="16dp">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
 
         <TextView
             android:id="@+id/textview_price"
@@ -26,6 +26,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:hint="@string/min"
+            android:inputType="numberDecimal"
             app:layout_constraintEnd_toStartOf="@id/max_price"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_price" />
@@ -35,6 +37,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:hint="@string/max"
+            android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/min_price"
             app:layout_constraintTop_toBottomOf="@id/textview_price" />
@@ -55,6 +59,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:hint="@string/min"
+            android:inputType="numberDecimal"
             app:layout_constraintEnd_toStartOf="@id/max_surface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_surface" />
@@ -64,6 +70,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:hint="@string/max"
+            android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/min_surface"
             app:layout_constraintTop_toBottomOf="@id/textview_surface" />
@@ -121,10 +129,10 @@
             android:id="@+id/numberSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
             android:entries="@array/numbers_array"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_num_photo"/>
+            app:layout_constraintTop_toBottomOf="@id/textview_num_photo" />
 
         <TextView
             android:id="@+id/textview_poi"
