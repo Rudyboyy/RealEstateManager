@@ -85,6 +85,7 @@
     <string name="filter">Filter</string>
     <string name="min">min</string>
     <string name="max">max</string>
+    <string name="apply_filter">Apply filter</string>
 
     <string-array name="numbers_array">
         <item />

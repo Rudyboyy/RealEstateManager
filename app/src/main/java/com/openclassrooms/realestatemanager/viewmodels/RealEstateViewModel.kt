@@ -62,4 +62,45 @@ class RealEstateViewModel(
     fun addProperty(property: Property) {
         executor.execute { viewModelScope.launch { repository.invoke(property) } }
     }
+
+    private val _minPrice = MutableLiveData<Int>()
+    val minPrice: LiveData<Int>
+        get() = _minPrice
+
+    private val _maxPrice = MutableLiveData<Int>()
+    val maxPrice: LiveData<Int>
+        get() = _maxPrice
+
+    val filteredProperties: LiveData<List<Property>> = MediatorLiveData<List<Property>>().apply {
+        var properties: List<Property>? = null
+        var minPrice: Int? = null
+        var maxPrice: Int? = null
+
+        val updateFilteredList: () -> Unit = {
+            val filteredList = properties?.filter { property ->
+                property.price >= (minPrice ?: 0) && property.price <= (maxPrice ?: Int.MAX_VALUE)
+            }
+            value = filteredList
+        }
+
+        addSource(propertiesLiveData) { prop ->
+            properties = prop
+            updateFilteredList()
+        }
+
+        addSource(_minPrice) { min ->
+            minPrice = min
+            updateFilteredList()
+        }
+
+        addSource(_maxPrice) { max ->
+            maxPrice = max
+            updateFilteredList()
+        }
+    }
+
+    fun setPriceRange(minPrice: Int, maxPrice: Int) {
+        _minPrice.value = minPrice
+        _maxPrice.value = maxPrice
+    }
 }
