@@ -71,14 +71,31 @@ class RealEstateViewModel(
     val maxPrice: LiveData<Int>
         get() = _maxPrice
 
+    private val _minSurface = MutableLiveData<Int>()
+    val minSurface: LiveData<Int>
+        get() = _minSurface
+
+    private val _maxSurface = MutableLiveData<Int>()
+    val maxSurface: LiveData<Int>
+        get() = _maxSurface
+
+    private val _minPhoto = MutableLiveData<Int>()
+    val minPhoto: LiveData<Int>
+        get() = _minPhoto
+
     val filteredProperties: LiveData<List<Property>> = MediatorLiveData<List<Property>>().apply {
         var properties: List<Property>? = null
         var minPrice: Int? = null
         var maxPrice: Int? = null
+        var minSurface: Int? = null
+        var maxSurface: Int? = null
+        var minPhoto: Int? = null
 
         val updateFilteredList: () -> Unit = {
             val filteredList = properties?.filter { property ->
                 property.price >= (minPrice ?: 0) && property.price <= (maxPrice ?: Int.MAX_VALUE)
+                        && property.surface >= (minSurface ?: 0) && property.surface <= (maxSurface ?: Int.MAX_VALUE)
+                        && property.photos.size >= (minPhoto ?: 0)
             }
             value = filteredList
         }
@@ -97,10 +114,34 @@ class RealEstateViewModel(
             maxPrice = max
             updateFilteredList()
         }
+
+        addSource(_minSurface) { max ->
+            minSurface = max
+            updateFilteredList()
+        }
+
+        addSource(_maxSurface) { max ->
+            maxSurface = max
+            updateFilteredList()
+        }
+
+        addSource(_minPhoto) { min ->
+            minPhoto = min
+            updateFilteredList()
+        }
     }
 
     fun setPriceRange(minPrice: Int, maxPrice: Int) {
         _minPrice.value = minPrice
         _maxPrice.value = maxPrice
+    }
+
+    fun setSurfaceRange(minSurface: Int, maxSurface: Int) {
+        _minSurface.value = minSurface
+        _maxSurface.value = maxSurface
+    }
+
+    fun setMinPhoto(minPhoto: Int) {
+        _minPhoto.value = minPhoto
     }
 }
