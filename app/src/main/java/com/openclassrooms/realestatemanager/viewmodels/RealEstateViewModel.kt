@@ -3,6 +3,10 @@ package com.openclassrooms.realestatemanager.viewmodels
 import androidx.lifecycle.*
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.repository.RealEstateRepository
+import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_DATE_ASCENDING
+import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_DATE_DESCENDING
+import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_PRICE_ASCENDING
+import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_PRICE_DESCENDING
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
 
@@ -83,6 +87,14 @@ class RealEstateViewModel(
     val minPhoto: LiveData<Int>
         get() = _minPhoto
 
+    private val _poiList = MutableLiveData<List<String>>()
+    val poiList: LiveData<List<String>>
+        get() = _poiList
+
+    private val _sortingOption = MutableLiveData<List<String>>()
+    val sortingOption: LiveData<List<String>>
+        get() = _sortingOption
+
     val filteredProperties: LiveData<List<Property>> = MediatorLiveData<List<Property>>().apply {
         var properties: List<Property>? = null
         var minPrice: Int? = null
@@ -90,14 +102,34 @@ class RealEstateViewModel(
         var minSurface: Int? = null
         var maxSurface: Int? = null
         var minPhoto: Int? = null
+        var poiList: List<String>? = null
 
         val updateFilteredList: () -> Unit = {
             val filteredList = properties?.filter { property ->
                 property.price >= (minPrice ?: 0) && property.price <= (maxPrice ?: Int.MAX_VALUE)
-                        && property.surface >= (minSurface ?: 0) && property.surface <= (maxSurface ?: Int.MAX_VALUE)
+                        && property.surface >= (minSurface ?: 0) && property.surface <= (maxSurface
+                    ?: Int.MAX_VALUE)
                         && property.photos.size >= (minPhoto ?: 0)
+                val propertyPoints = property.pointOfInterest.split(", ")
+                val requiredPoints = poiList ?: emptyList()
+
+                requiredPoints.all { requiredPoint ->
+                    propertyPoints.any { propertyPoint ->
+                        propertyPoint == requiredPoint
+                    }
+                }
             }
-            value = filteredList
+            val sortedList = filteredList?.toMutableList()
+
+            for (option in _sortingOption.value.orEmpty()) {
+                when (option) {
+                    SORT_BY_PRICE_ASCENDING -> sortedList?.sortBy { it.price }
+                    SORT_BY_PRICE_DESCENDING -> sortedList?.sortByDescending { it.price }
+                    SORT_BY_DATE_ASCENDING -> sortedList?.sortBy { it.entryDate }
+                    SORT_BY_DATE_DESCENDING -> sortedList?.sortByDescending { it.entryDate }
+                }
+            }
+            value = sortedList
         }
 
         addSource(propertiesLiveData) { prop ->
@@ -129,6 +161,15 @@ class RealEstateViewModel(
             minPhoto = min
             updateFilteredList()
         }
+
+        addSource(_poiList) { poi ->
+            poiList = poi
+            updateFilteredList()
+        }
+
+        addSource(_sortingOption) {
+            updateFilteredList()
+        }
     }
 
     fun setPriceRange(minPrice: Int, maxPrice: Int) {
@@ -143,5 +184,13 @@ class RealEstateViewModel(
 
     fun setMinPhoto(minPhoto: Int) {
         _minPhoto.value = minPhoto
+    }
+
+    fun setPoiList(poiList: List<String>) {
+        _poiList.value = poiList
+    }
+
+    fun setSortingOption(option: List<String>) {
+        _sortingOption.value = option
     }
 }

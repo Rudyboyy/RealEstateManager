@@ -10,4 +10,8 @@ object Constants {
     const val BASE_URL = "https://maps.googleapis.com/maps/api/"
     const val MAPS_API_KEY = BuildConfig.MAPS_API_KEY
     const val REQUEST_CODE_UPDATE_LOCATION = 541
+    const val SORT_BY_PRICE_ASCENDING = "Price Ascending"
+    const val SORT_BY_PRICE_DESCENDING = "Price Descending"
+    const val SORT_BY_DATE_ASCENDING = "Date Ascending"
+    const val SORT_BY_DATE_DESCENDING = "Date Descending"
 }
