@@ -58,6 +58,9 @@ class FilterDialogFragment : DialogFragment() {
         viewModel.setMinPhoto(minPhoto)
         viewModel.setPoiList(poiList)
         viewModel.setSortingOption(selectedTags)
+        viewModel.getCoordinates("Paris , France").observe(viewLifecycleOwner) {
+
+        }
     }
 
     private fun setFilter(binding: FilterDialogFragmentBinding) {

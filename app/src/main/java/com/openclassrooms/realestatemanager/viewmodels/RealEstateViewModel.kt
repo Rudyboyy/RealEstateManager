@@ -67,6 +67,11 @@ class RealEstateViewModel(
         executor.execute { viewModelScope.launch { repository.invoke(property) } }
     }
 
+    fun getCoordinates(address: String): LiveData<Pair<Double?, Double?>> = liveData {
+        val coordinates = repository.getCoordinatesFromAddress(address)
+        emit(coordinates)
+    }
+
     private val _minPrice = MutableLiveData<Int>()
     val minPrice: LiveData<Int>
         get() = _minPrice
@@ -94,6 +99,14 @@ class RealEstateViewModel(
     private val _sortingOption = MutableLiveData<List<String>>()
     val sortingOption: LiveData<List<String>>
         get() = _sortingOption
+
+    private val _selectLatitude = MutableLiveData<Double?>()
+    val selectLatitude: LiveData<Double?>
+        get() = _selectLatitude
+
+    private val _selectLongitude = MutableLiveData<Double?>()
+    val selectLongitude: LiveData<Double?>
+        get() = _selectLongitude
 
     val filteredProperties: LiveData<List<Property>> = MediatorLiveData<List<Property>>().apply {
         var properties: List<Property>? = null
