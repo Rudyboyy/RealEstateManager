@@ -13,6 +13,14 @@
             android:layout_height="match_parent"
             tools:context=".ui.map.MapFragment" />
 
+    <ImageView
+        android:id="@+id/no_internet_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/no_wifi"
+        android:scaleType="fitCenter"
+        android:background="@color/white" />
+
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
