@@ -3,6 +3,8 @@ package com.openclassrooms.realestatemanager.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.MainActivityBinding
+import com.openclassrooms.realestatemanager.ui.dialog.FilterDialogFragment
 import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_UPDATE_LOCATION
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.MainViewModel
@@ -43,7 +46,10 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment_main) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.PropertyListFragment, R.id.MapFragment, R.id.AddFragment, R.id.LoanCalculatorFragment
+            R.id.PropertyListFragment,
+            R.id.MapFragment,
+            R.id.AddFragment,
+            R.id.LoanCalculatorFragment
         )
             .setOpenableLayout(binding.drawerLayout)
             .build()
@@ -57,6 +63,22 @@ class MainActivity : AppCompatActivity() {
     private fun initToolbar() {
         this.toolbar = binding.toolbar
         setSupportActionBar(toolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_filter -> {
+                val filterDialogFragment = FilterDialogFragment()
+                filterDialogFragment.show(supportFragmentManager, "FilterDialogFragment")
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun initDrawerLayout() {

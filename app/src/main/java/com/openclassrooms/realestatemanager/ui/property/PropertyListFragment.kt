@@ -26,7 +26,7 @@ class PropertyListFragment : Fragment(R.layout.real_estates_list_fragment) {
         super.onViewCreated(view, savedInstanceState)
         handleBackPressed(R.id.PropertyListFragment)
         val slidingPaneLayout = binding.slidingPaneLayout
-//        slidingPaneLayout.lockMode = SlidingPaneLayout.LOCK_MODE_LOCKED // todo to disable the swipe from the container to get pressback
+//        slidingPaneLayout.lockMode = SlidingPaneLayout.LOCK_MODE_LOCKED // todo to disable the swipe from the container to get press-back
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             PropertyListOnBackPressedCallback(slidingPaneLayout)
@@ -40,9 +40,11 @@ class PropertyListFragment : Fragment(R.layout.real_estates_list_fragment) {
             context = requireContext()
         )
         binding.realEstateRecyclerView.adapter = adapter
-        viewModel.propertiesLiveData.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            setPropertyFromMap(adapter, it)
+        viewModel.filteredProperties.observe(viewLifecycleOwner) {
+            if (it != null) {
+                adapter.submitList(it)
+                setPropertyFromMap(adapter, it)
+            }
         }
     }
 

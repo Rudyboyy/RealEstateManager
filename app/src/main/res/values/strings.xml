@@ -73,6 +73,28 @@
     <string name="min_term_years">2 years</string>
     <string name="total_interest">Cost of loan %s $</string>
     <string name="min_cost_of_loan">Cost of loan 0 $</string>
+    <string name="price_ascending">Price Ascending</string>
+    <string name="price_descending">Price Descending</string>
+    <string name="date_ascending">Date Ascending</string>
+    <string name="date_descending">Date Descending</string>
+    <string name="ordering_filter">Ordering filter</string>
+    <string name="minimum_photo">Minimum photo</string>
+    <string name="radius">Radius</string>
+    <string name="location">Location</string>
+    <string name="surface_m">Surface m²</string>
+    <string name="filter">Filter</string>
+    <string name="min">min</string>
+    <string name="max">max</string>
+    <string name="apply_filter">Apply</string>
+    <string name="reset_filter">Reset</string>
 
+    <string-array name="numbers_array">
+        <item />
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 
 </resources>
