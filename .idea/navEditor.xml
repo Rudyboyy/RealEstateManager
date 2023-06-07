@@ -20,7 +20,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="MFragment">
+                  <entry key="LoanCalculatorFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -81,6 +81,11 @@
                     </value>
                   </entry>
                   <entry key="action_global_to_imageSlideDialogFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="action_global_to_loanCalculatorFragment">
                     <value>
                       <LayoutPositions />
                     </value>

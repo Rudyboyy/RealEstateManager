@@ -56,6 +56,7 @@ object Utils {
 //        return wifi.isWifiEnabled
 //    }
 
+    @SuppressLint("MissingPermission")
     fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

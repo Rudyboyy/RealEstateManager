@@ -22,6 +22,7 @@ import com.openclassrooms.realestatemanager.databinding.MapFragmentBinding
 import com.openclassrooms.realestatemanager.injection.Injection
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.utils.FragmentUtils.handleBackPressed
+import com.openclassrooms.realestatemanager.utils.Utils.isInternetAvailable
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.MapViewModel
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
@@ -38,11 +39,23 @@ class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
-        mapFragment?.getMapAsync(this)
+        setUpMap()
         handleBackPressed(actionFragment)
         setBackButton()
         getLocation()
+    }
+
+    private fun setUpMap() {
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        if (isInternetAvailable(requireContext())) {
+            mapFragment?.getMapAsync(this)
+            getLocation()
+            binding.map.visibility = View.VISIBLE
+            binding.noInternetImage.visibility = View.GONE
+        } else {
+            binding.map.visibility = View.GONE
+            binding.noInternetImage.visibility = View.VISIBLE
+        }
     }
 
     @SuppressLint("MissingPermission")
