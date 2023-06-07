@@ -19,7 +19,7 @@ class RealEstateViewModel(
     val selectedProperty: LiveData<Property>
         get() = _selectedProperty
 
-    val propertiesLiveData: LiveData<List<Property>> = repository.properties.asLiveData()
+    private val propertiesLiveData: LiveData<List<Property>> = repository.properties.asLiveData()
 
     private val _latitude = MutableLiveData<Double?>()
     val latitude: LiveData<Double?>
@@ -67,11 +67,6 @@ class RealEstateViewModel(
         executor.execute { viewModelScope.launch { repository.invoke(property) } }
     }
 
-    fun getCoordinates(address: String): LiveData<Pair<Double?, Double?>> = liveData {
-        val coordinates = repository.getCoordinatesFromAddress(address)
-        emit(coordinates)
-    }
-
     private val _minPrice = MutableLiveData<Int>()
     val minPrice: LiveData<Int>
         get() = _minPrice
@@ -100,14 +95,6 @@ class RealEstateViewModel(
     val sortingOption: LiveData<List<String>>
         get() = _sortingOption
 
-    private val _selectLatitude = MutableLiveData<Double?>()
-    val selectLatitude: LiveData<Double?>
-        get() = _selectLatitude
-
-    private val _selectLongitude = MutableLiveData<Double?>()
-    val selectLongitude: LiveData<Double?>
-        get() = _selectLongitude
-
     val filteredProperties: LiveData<List<Property>> = MediatorLiveData<List<Property>>().apply {
         var properties: List<Property>? = null
         var minPrice: Int? = null
@@ -119,10 +106,6 @@ class RealEstateViewModel(
 
         val updateFilteredList: () -> Unit = {
             val filteredList = properties?.filter { property ->
-                property.price >= (minPrice ?: 0) && property.price <= (maxPrice ?: Int.MAX_VALUE)
-                        && property.surface >= (minSurface ?: 0) && property.surface <= (maxSurface
-                    ?: Int.MAX_VALUE)
-                        && property.photos.size >= (minPhoto ?: 0)
                 val propertyPoints = property.pointOfInterest.split(", ")
                 val requiredPoints = poiList ?: emptyList()
 
@@ -131,6 +114,11 @@ class RealEstateViewModel(
                         propertyPoint == requiredPoint
                     }
                 }
+                        && property.price >= (minPrice ?: 0)
+                        && property.price <= (maxPrice ?: Int.MAX_VALUE)
+                        && property.surface >= (minSurface ?: 0)
+                        && property.surface <= (maxSurface ?: Int.MAX_VALUE)
+                        && property.photos.size >= (minPhoto ?: 0)
             }
             val sortedList = filteredList?.toMutableList()
 

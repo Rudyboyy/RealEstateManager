@@ -90,7 +90,6 @@ class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
         }
     }
 
-
     private fun setBackButton() {
         binding.backButton.setOnClickListener {
             findNavController().navigate(actionFragment)
@@ -102,7 +101,7 @@ class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
         mapViewModel.userLocation.observe(viewLifecycleOwner) { location ->
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
         }
-        realEstateViewModel.propertiesLiveData.observe(viewLifecycleOwner) {
+        realEstateViewModel.filteredProperties.observe(viewLifecycleOwner) {
             for (property in it) {
                 setMarker(property)
             }

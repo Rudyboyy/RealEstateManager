@@ -77,26 +77,6 @@
             app:layout_constraintTop_toBottomOf="@id/textview_surface" />
 
         <TextView
-            android:id="@+id/textview_location"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/location"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/min_surface" />
-
-        <EditText
-            android:id="@+id/location_edit_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:hint="Close to ..."
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_location" />
-
-        <TextView
             android:id="@+id/textview_num_photo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -105,7 +85,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/location_edit_text" />
+            app:layout_constraintTop_toBottomOf="@id/max_surface" />
 
         <Spinner
             android:id="@+id/numberSpinner"
