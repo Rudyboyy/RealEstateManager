@@ -298,7 +298,6 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             if (isValid) {
                 saveProperty()
                 findNavController().navigate(actionFragment)
-                sendVisualNotification()
             }
             showToast(isValid)
         }
@@ -347,7 +346,9 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
                     photos = propertyPhotos
                 )
                 if (isNew) {
-                    viewModel.addProperty(property)
+                    viewModel.addProperty(property) { isSuccess ->
+                        sendVisualNotification(isSuccess)
+                    }
                 } else {
                     viewModel.update(property)
                 }
@@ -398,7 +399,8 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
-    private fun sendVisualNotification() {
+    private fun sendVisualNotification(isSuccess: Boolean) {
+        val contentText = if (isSuccess) getString(R.string.new_property_added) else getString(R.string.error_property_not_added)
         if (isNew) {
             val notificationId = 7
             val intent = Intent(requireContext(), MainActivity::class.java).apply {
@@ -411,7 +413,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
                 NotificationCompat.Builder(requireContext(), channelId)
                     .setSmallIcon(R.drawable.real_estate)
                     .setContentTitle(requireContext().getString(R.string.app_name))
-                    .setContentText(getString(R.string.new_property_added))
+                    .setContentText(contentText)
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setContentIntent(pendingIntent)

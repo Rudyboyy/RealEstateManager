@@ -63,8 +63,17 @@ class RealEstateViewModel(
         }
     }
 
-    fun addProperty(property: Property) {
-        executor.execute { viewModelScope.launch { repository.invoke(property) } }
+    fun addProperty(property: Property, callback: (Boolean) -> Unit) {
+        executor.execute {
+            viewModelScope.launch {
+                try {
+                    repository.invoke(property)
+                    callback(true)
+                } catch (e: Exception) {
+                    callback(false)
+                }
+            }
+        }
     }
 
     private val _minPrice = MutableLiveData<Int>()
