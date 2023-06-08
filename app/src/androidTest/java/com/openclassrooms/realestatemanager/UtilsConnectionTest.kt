@@ -13,6 +13,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import com.openclassrooms.realestatemanager.ui.MainActivity
+import com.openclassrooms.realestatemanager.utils.Utils
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,11 +35,7 @@ class UtilsConnectionTest {
     @Test
     fun testConnectivity() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        val activeNetworkInfo = connectivityManager.activeNetworkInfo
-        val isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnected
+        val isConnected = Utils.isInternetAvailable(context)
 
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
         onView(withText(R.string.map)).perform(click())
