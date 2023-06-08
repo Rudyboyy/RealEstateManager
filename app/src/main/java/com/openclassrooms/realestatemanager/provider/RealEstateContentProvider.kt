@@ -13,9 +13,12 @@ import kotlinx.coroutines.*
 class RealEstateContentProvider : ContentProvider() {
 
     private lateinit var propertyDao: PropertyDao
-    private val AUTHORITY = "com.openclassrooms.realestatemanager.provider"
-    private val TABLE_NAME = Property::class.simpleName
-    val URI_ITEM = Uri.parse("content://$AUTHORITY/$TABLE_NAME")
+
+    companion object {
+        private const val AUTHORITY = "com.openclassrooms.realestatemanager.provider"
+        private val TABLE_NAME = Property::class.simpleName
+        val URI_ITEM: Uri = Uri.parse("content://$AUTHORITY/$TABLE_NAME")
+    }
 
 
     override fun onCreate(): Boolean {
@@ -35,7 +38,9 @@ class RealEstateContentProvider : ContentProvider() {
         sortOrder: String?
     ): Cursor? {
         val propertyId = ContentUris.parseId(uri)
-        return propertyDao.getPropertiesWithCursor(propertyId)
+        val cursor = propertyDao.getPropertiesWithCursor(propertyId)
+        cursor.setNotificationUri(context?.contentResolver, uri)
+        return cursor
     }
 
     override fun getType(uri: Uri): String? {
