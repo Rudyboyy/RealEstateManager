@@ -32,7 +32,7 @@ class PropertyListFragment : Fragment(R.layout.real_estates_list_fragment) {
             PropertyListOnBackPressedCallback(slidingPaneLayout)
         )
 
-         val adapter = PropertyAdapter(
+        val adapter = PropertyAdapter(
             onItemClicked = {
                 viewModel.updateSelectedProperty(it)
                 binding.slidingPaneLayout.openPane()

@@ -14,8 +14,6 @@ import com.openclassrooms.realestatemanager.injection.Injection
 import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.model.PropertyStatus
-import com.openclassrooms.realestatemanager.service.CurrencyChangeListener
-import com.openclassrooms.realestatemanager.ui.MainActivity
 import com.openclassrooms.realestatemanager.utils.Constants.BASE_URL_STATIC_MAP
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_MARKER_TYPE
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_ZOOM_AND_SIZE
@@ -24,7 +22,6 @@ import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 import java.text.DateFormat
-import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
