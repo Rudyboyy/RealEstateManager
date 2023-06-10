@@ -19,6 +19,7 @@ import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.MainActivityBinding
+import com.openclassrooms.realestatemanager.service.CurrencyChangeListener
 import com.openclassrooms.realestatemanager.ui.dialog.FilterDialogFragment
 import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_UPDATE_LOCATION
 import com.openclassrooms.realestatemanager.utils.viewBinding
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
     private var toolbar: Toolbar? = null
+    private var listener: CurrencyChangeListener? = null
+    private var isCurrencyDollar = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +63,10 @@ class MainActivity : AppCompatActivity() {
         requestLocationPermission()
     }
 
+    fun setOnCurrencyChangeListener(listener: CurrencyChangeListener) {
+        this.listener = listener
+    }
+
     private fun initToolbar() {
         this.toolbar = binding.toolbar
         setSupportActionBar(toolbar)
@@ -75,6 +82,17 @@ class MainActivity : AppCompatActivity() {
             R.id.action_filter -> {
                 val filterDialogFragment = FilterDialogFragment()
                 filterDialogFragment.show(supportFragmentManager, "FilterDialogFragment")
+                true
+            }
+            R.id.action_currency -> {
+                isCurrencyDollar = !isCurrencyDollar
+                listener?.onCurrencyChanged(isCurrencyDollar)
+
+                if (isCurrencyDollar) {
+                    item.setIcon(R.drawable.ic_baseline_euro_24)
+                } else {
+                    item.setIcon(R.drawable.ic_baseline_attach_money_24)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

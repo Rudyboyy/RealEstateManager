@@ -88,6 +88,7 @@
     <string name="apply_filter">Apply</string>
     <string name="reset_filter">Reset</string>
     <string name="error_property_not_added">An error occurred, the property was not added</string>
+    <string name="money">Money</string>
 
     <string-array name="numbers_array">
         <item />
