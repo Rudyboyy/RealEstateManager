@@ -203,4 +203,10 @@ class RealEstateViewModel(
     fun setSortingOption(option: List<String>) {
         _sortingOption.value = option
     }
+
+    val currencyLiveData = MutableLiveData<Boolean>()
+
+    fun setCurrency(isDollar: Boolean) {
+        currencyLiveData.value = isDollar
+    }
 }

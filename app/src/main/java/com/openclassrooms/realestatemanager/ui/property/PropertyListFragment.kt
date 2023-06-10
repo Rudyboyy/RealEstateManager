@@ -46,6 +46,9 @@ class PropertyListFragment : Fragment(R.layout.real_estates_list_fragment) {
                 setPropertyFromMap(adapter, it)
             }
         }
+        viewModel.currencyLiveData.observe(viewLifecycleOwner) {
+            adapter.updateCurrency(it)
+        }
     }
 
     private fun setPropertyFromMap(adapter: PropertyAdapter, propertyList: List<Property>) {
