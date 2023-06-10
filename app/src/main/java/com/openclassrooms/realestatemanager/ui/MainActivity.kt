@@ -24,17 +24,17 @@ import com.openclassrooms.realestatemanager.ui.dialog.FilterDialogFragment
 import com.openclassrooms.realestatemanager.utils.Constants.REQUEST_CODE_UPDATE_LOCATION
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.MainViewModel
+import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private val binding by viewBinding { MainActivityBinding.inflate(it) }
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<RealEstateViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
     private var toolbar: Toolbar? = null
-    private var listener: CurrencyChangeListener? = null
     private var isCurrencyDollar = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +63,6 @@ class MainActivity : AppCompatActivity() {
         requestLocationPermission()
     }
 
-    fun setOnCurrencyChangeListener(listener: CurrencyChangeListener) {
-        this.listener = listener
-    }
-
     private fun initToolbar() {
         this.toolbar = binding.toolbar
         setSupportActionBar(toolbar)
@@ -86,8 +82,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_currency -> {
                 isCurrencyDollar = !isCurrencyDollar
-                listener?.onCurrencyChanged(isCurrencyDollar)
-
+                viewModel.setCurrency(isCurrencyDollar)
                 if (isCurrencyDollar) {
                     item.setIcon(R.drawable.ic_baseline_euro_24)
                 } else {

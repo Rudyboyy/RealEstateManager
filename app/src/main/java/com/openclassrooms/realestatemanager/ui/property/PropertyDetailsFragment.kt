@@ -14,10 +14,13 @@ import com.openclassrooms.realestatemanager.injection.Injection
 import com.openclassrooms.realestatemanager.model.Photo
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.model.PropertyStatus
+import com.openclassrooms.realestatemanager.service.CurrencyChangeListener
+import com.openclassrooms.realestatemanager.ui.MainActivity
 import com.openclassrooms.realestatemanager.utils.Constants.BASE_URL_STATIC_MAP
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_MARKER_TYPE
 import com.openclassrooms.realestatemanager.utils.Constants.DEFAULT_ZOOM_AND_SIZE
 import com.openclassrooms.realestatemanager.utils.Constants.MAPS_API_KEY
+import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 import java.text.DateFormat
@@ -62,6 +65,23 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             initRecyclerView(it.photos)
             updateStaticMap(it)
             setEditButton(it)
+            updatePropertyPrice(it)
+        }
+    }
+
+    private fun updatePropertyPrice(property: Property) {
+        viewModel.currencyLiveData.observe(viewLifecycleOwner) { isDollar ->
+            val price = if (isDollar) {
+                property.price
+            } else {
+                Utils.convertDollarToEuro(property.price.toInt()).toDouble()
+            }
+            val priceFormatResId = if (isDollar) {
+                R.string.price_format_dollar
+            } else {
+                R.string.price_format_eur
+            }
+            binding.propertyPrice.text = getString(priceFormatResId, formatAmount(price))
         }
     }
 
@@ -131,6 +151,5 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
             binding.editButton.visibility = View.GONE
             binding.textEdit.visibility = View.GONE
         }
-
     }
 }
