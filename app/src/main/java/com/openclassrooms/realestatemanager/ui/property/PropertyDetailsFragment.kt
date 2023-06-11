@@ -39,9 +39,7 @@ class PropertyDetailsFragment : Fragment(R.layout.property_details_fragment) {
     }
 
     private fun initUi() {
-        val priceFormatResId =
-            if (false) R.string.price_format_eur else R.string.price_format_dollar
-        //todo change false to a val currentCurrency: Boolean to get the current currency
+        val priceFormatResId = R.string.price_format_dollar
         val surfaceFormat = getString(R.string.square_meters)
         viewModel.selectedProperty.observe(this.viewLifecycleOwner) {
             binding.address.text = it.fullAddress
