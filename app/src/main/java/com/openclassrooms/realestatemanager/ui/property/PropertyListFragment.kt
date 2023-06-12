@@ -37,7 +37,8 @@ class PropertyListFragment : Fragment(R.layout.real_estates_list_fragment) {
                 viewModel.updateSelectedProperty(it)
                 binding.slidingPaneLayout.openPane()
             },
-            context = requireContext()
+            context = requireContext(),
+            viewModel = viewModel
         )
         binding.realEstateRecyclerView.adapter = adapter
         viewModel.filteredProperties.observe(viewLifecycleOwner) {

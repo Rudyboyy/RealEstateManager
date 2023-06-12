@@ -15,16 +15,17 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.RealEstateItemBinding
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.utils.Utils
+import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 import java.text.NumberFormat
 import java.util.*
 
 class PropertyAdapter(
     private val onItemClicked: (Property) -> Unit,
-    private val context: Context
+    private val context: Context,
+    private val viewModel: RealEstateViewModel,
 ) :
     ListAdapter<Property, PropertyAdapter.ViewHolder>(RealEstatesDiffCallback) {
 
-    private var selectedItemIndex: Int = RecyclerView.NO_POSITION
     private var isCurrencyDollar: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -36,28 +37,35 @@ class PropertyAdapter(
         val property = getItem(position)
         holder.itemView.setOnClickListener {
             onItemClicked(property)
-            selectedItemIndex = holder.absoluteAdapterPosition
             notifyDataSetChanged()
         }
-        setSelectedBackgroundColor(position, holder)
+        setSelectedBackgroundColor(property, holder)
         holder.bind(property)
     }
 
-    private fun setSelectedBackgroundColor(position: Int, holder: ViewHolder) {
-        val isSelected = selectedItemIndex == position
-        val backgroundColor = if (isSelected) {
-            ContextCompat.getColor(context, R.color.colorAccent)
-        } else {
-            val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
-            val currentMode = uiModeManager.nightMode
-
-            if (currentMode == UiModeManager.MODE_NIGHT_YES) {
-                Color.DKGRAY
-            } else {
-                Color.WHITE
+    private fun setSelectedBackgroundColor(property: Property, holder: ViewHolder) {
+        val colorAccent = ContextCompat.getColor(context, R.color.colorAccent)
+        if (viewModel.selectedProperty.value == null) {
+            if (property == getItem(0)) {
+                holder.itemView.setBackgroundColor(colorAccent)
             }
+        } else {
+            val isSelected = viewModel.selectedProperty.value == property
+            val backgroundColor = if (isSelected) {
+                colorAccent
+            } else {
+                val uiModeManager =
+                    context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+                val currentMode = uiModeManager.nightMode
+
+                if (currentMode == UiModeManager.MODE_NIGHT_YES) {
+                    Color.DKGRAY
+                } else {
+                    Color.WHITE
+                }
+            }
+            holder.itemView.setBackgroundColor(backgroundColor)
         }
-        holder.itemView.setBackgroundColor(backgroundColor)
     }
 
     inner class ViewHolder(
