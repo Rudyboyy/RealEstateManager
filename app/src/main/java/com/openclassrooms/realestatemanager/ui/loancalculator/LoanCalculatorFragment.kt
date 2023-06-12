@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.LoanCalculatorFragmentBinding
 import com.openclassrooms.realestatemanager.injection.Injection
@@ -20,6 +21,7 @@ class LoanCalculatorFragment : Fragment(R.layout.loan_calculator_fragment) {
     private val viewModel: RealEstateViewModel by activityViewModels {
         Injection.provideViewModelFactory(requireContext())
     }
+    private val actionFragment: Int = R.id.action_global_to_PropertyListFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,6 +32,13 @@ class LoanCalculatorFragment : Fragment(R.layout.loan_calculator_fragment) {
 
         setupSeekBarListeners()
         updateCurrency()
+        setBackButton()
+    }
+
+    private fun setBackButton() {
+        binding.backButton.setOnClickListener {
+            findNavController().navigate(actionFragment)
+        }
     }
 
     private fun setupSeekBarListeners() {
