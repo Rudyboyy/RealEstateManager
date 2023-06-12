@@ -51,10 +51,10 @@ class PropertyAdapter(
             val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
             val currentMode = uiModeManager.nightMode
 
-            if (currentMode == UiModeManager.MODE_NIGHT_NO) {
-                Color.WHITE
-            } else {
+            if (currentMode == UiModeManager.MODE_NIGHT_YES) {
                 Color.DKGRAY
+            } else {
+                Color.WHITE
             }
         }
         holder.itemView.setBackgroundColor(backgroundColor)
