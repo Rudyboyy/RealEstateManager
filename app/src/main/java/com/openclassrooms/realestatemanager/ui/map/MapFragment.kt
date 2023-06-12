@@ -26,6 +26,8 @@ import com.openclassrooms.realestatemanager.utils.Utils.isInternetAvailable
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.MapViewModel
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
+import java.text.NumberFormat
+import java.util.*
 
 class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
 
@@ -36,6 +38,7 @@ class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
     }
     private lateinit var map: GoogleMap
     private val actionFragment: Int = R.id.action_global_to_PropertyListFragment
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,6 +74,8 @@ class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
     }
 
     private fun setMarker(result: Property) {
+        val surface = getString(R.string.square_meters, formatAmount(result.surface))
+        val formattedPrice = getString(R.string.price_format_dollar, formatAmount(result.price))
         val marker: Marker? = map.addMarker(
             MarkerOptions()
                 .position(
@@ -79,7 +84,8 @@ class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
                         result.longitude ?: 0.0
                     )
                 )
-                .title(result.type)
+                .title("${result.type} (${result.status})")
+                .snippet("Price: $formattedPrice | Surface: $surface ")
                 .alpha(0.8f)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         )
@@ -91,6 +97,11 @@ class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
                 )
             }
         }
+    }
+
+    private fun formatAmount(amount: Double): String {
+        val numberFormat = NumberFormat.getNumberInstance(Locale.getDefault())
+        return numberFormat.format(amount)
     }
 
     private fun onMarkerClick(marker: Marker) {
