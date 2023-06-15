@@ -181,7 +181,7 @@ data class Property(
 
     val fullAddress: String
         get() {
-            return "${address},${city},${postalCode},${country}"
+            return "$address, $city, $postalCode, $country"
         }
 }
 
