@@ -5,6 +5,7 @@ buildscript {
         room_version = '2.5.1'
         kotlin_version = '1.8.10'
         nav_version = '2.5.3'
+        espressoVersion = '3.5.1'
     }
 
     repositories {
