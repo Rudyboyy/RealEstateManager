@@ -22,4 +22,7 @@ interface PropertyDao {
 
     @Query("SELECT * FROM realEstate WHERE property_id = :propertyId")
     fun getPropertiesWithCursor(propertyId: Long): Cursor
+
+    @Query("SELECT * FROM realEstate")
+    fun getPropertiesWithCursor(): Cursor
 }
