@@ -40,6 +40,7 @@ class UtilsConnectionTest {
 
     @Test
     fun testConnectivity() {
+        //For test both possibility you can run the test one time with internet and one more time with no internet
         val context = ApplicationProvider.getApplicationContext<Context>()
         val isConnected = Utils.isInternetAvailable(context)
 

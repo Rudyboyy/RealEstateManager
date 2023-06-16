@@ -31,6 +31,20 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1642336520">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="22X0220919003302" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="HUAWEI&#10; VOG-L29" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1564552485">
           <value>
             <AndroidTestResultsTableState>
@@ -60,6 +74,20 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1042277107">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="22X0220919003302" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="HUAWEI&#10; VOG-L29" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-946954274">
           <value>
             <AndroidTestResultsTableState>
@@ -75,6 +103,63 @@
           </value>
         </entry>
         <entry key="-682312852">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="22X0220919003302" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="HUAWEI&#10; VOG-L29" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-611430645">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="22X0220919003302" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="HUAWEI&#10; VOG-L29" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-611430614">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="22X0220919003302" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="HUAWEI&#10; VOG-L29" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-611430583">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="22X0220919003302" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="HUAWEI" value="120" />
+                  <entry key="HUAWEI&#10; VOG-L29" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-239230042">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
@@ -124,6 +209,20 @@
                   <entry key="22X0220919003302" value="120" />
                   <entry key="Duration" value="90" />
                   <entry key="HUAWEI" value="120" />
+                  <entry key="HUAWEI&#10; VOG-L29" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-77877958">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="22X0220919003302" value="120" />
+                  <entry key="Duration" value="90" />
                   <entry key="HUAWEI&#10; VOG-L29" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
