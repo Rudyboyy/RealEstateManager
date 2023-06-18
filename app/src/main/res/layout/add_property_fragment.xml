@@ -257,7 +257,7 @@
                 android:id="@+id/textCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="City" />
+                android:hint="@string/city" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -278,7 +278,7 @@
                 android:id="@+id/textPostalCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Postal code" />
+                android:hint="@string/postal_code" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -299,7 +299,7 @@
                 android:id="@+id/textCountry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Country" />
+                android:hint="@string/country" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

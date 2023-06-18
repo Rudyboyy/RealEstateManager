@@ -333,7 +333,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
                     address = address,
                     city = city,
                     postalCode = postalCode,
-                    country = country,//todo need to change the way to get the address with postal code country city etc to get the right position with geocoding
+                    country = country,
                     status = PropertyStatus.AVAILABLE,
                     numberOfRooms = numRoom,
                     numberOfBedrooms = numBedroom,
