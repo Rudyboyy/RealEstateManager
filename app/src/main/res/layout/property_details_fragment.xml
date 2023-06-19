@@ -206,15 +206,14 @@
                 android:id="@+id/property_description_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Description"
+                android:text="@string/description"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/property_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/second_divider" />
-            <!--todo put the text in justified directly in the code because in xml minSdk26
-            todo + string res-->
+
             <TextView
                 android:id="@+id/property_description"
                 android:layout_width="0dp"
@@ -266,7 +265,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Point of interest"
+                android:text="@string/point_of_interest"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/point_of_interest"
