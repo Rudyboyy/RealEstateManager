@@ -88,6 +88,8 @@ class PropertyAdapter(
                 Glide.with(binding.root)
                     .load(item.photos[0].uri)
                     .into(binding.propertyImage)
+            } else {
+                binding.propertyImage.setImageResource(R.drawable.real_estate)
             }
         }
     }
