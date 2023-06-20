@@ -21,6 +21,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+<!--        todo probleme for property who don't have photo-->
 
         <TextView
             android:id="@+id/property_type"

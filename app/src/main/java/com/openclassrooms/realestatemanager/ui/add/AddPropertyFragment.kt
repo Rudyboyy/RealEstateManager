@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -41,8 +40,6 @@ import com.openclassrooms.realestatemanager.utils.CheckBoxOptionProvider.getOpti
 import com.openclassrooms.realestatemanager.utils.FragmentUtils.handleBackPressed
 import com.openclassrooms.realestatemanager.utils.viewBinding
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -318,41 +315,33 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         val numBedroom = binding.numBedroom.text.toString().toInt()
         val numBathroom = binding.numBathroom.text.toString().toInt()
         val surface = binding.textSurface.text.toString().toDouble()
-        val latFlow = viewModel.latitude.asFlow()
-        val lgtFlow = viewModel.longitude.asFlow()
         val poi = getPoi()
-        viewModel.updateCoordinatesFromAddress("$address, $postalCode, $country")
-        lifecycleScope.launch {
-            combine(latFlow, lgtFlow) { lat, lgt ->
-                val property = Property(
-                    id = mId,
-                    agent = agent,
-                    type = type,
-                    price = price,
-                    description = description,
-                    address = address,
-                    city = city,
-                    postalCode = postalCode,
-                    country = country,
-                    status = PropertyStatus.AVAILABLE,
-                    numberOfRooms = numRoom,
-                    numberOfBedrooms = numBedroom,
-                    numberOfBathrooms = numBathroom,
-                    surface = surface,
-                    pointOfInterest = poi,
-                    entryDate = Date(System.currentTimeMillis()),
-                    latitude = lat,
-                    longitude = lgt,
-                    photos = propertyPhotos
-                )
-                if (isNew) {
-                    viewModel.addProperty(property) { isSuccess ->
-                        sendVisualNotification(isSuccess)
-                    }
-                } else {
-                    viewModel.update(property)
-                }
-            }.collect()
+
+        val property = Property(
+            id = mId,
+            agent = agent,
+            type = type,
+            price = price,
+            description = description,
+            address = address,
+            city = city,
+            postalCode = postalCode,
+            country = country,
+            status = PropertyStatus.AVAILABLE,
+            numberOfRooms = numRoom,
+            numberOfBedrooms = numBedroom,
+            numberOfBathrooms = numBathroom,
+            surface = surface,
+            pointOfInterest = poi,
+            entryDate = Date(System.currentTimeMillis()),
+            photos = propertyPhotos
+        )
+        if (isNew) {
+            viewModel.addProperty(property) { isSuccess ->
+                sendVisualNotification(isSuccess)
+            }
+        } else {
+            viewModel.update(property)
         }
     }
 
@@ -400,7 +389,8 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
 
     @SuppressLint("UnspecifiedImmutableFlag")
     private fun sendVisualNotification(isSuccess: Boolean) {
-        val contentText = if (isSuccess) getString(R.string.new_property_added) else getString(R.string.error_property_not_added)
+        val contentText =
+            if (isSuccess) getString(R.string.new_property_added) else getString(R.string.error_property_not_added)
         if (isNew) {
             val notificationId = 7
             val intent = Intent(requireContext(), MainActivity::class.java).apply {

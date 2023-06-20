@@ -7,7 +7,9 @@ import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_DATE_ASCENDI
 import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_DATE_DESCENDING
 import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_PRICE_ASCENDING
 import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_PRICE_DESCENDING
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.Executor
 
 class RealEstateViewModel(
@@ -21,45 +23,25 @@ class RealEstateViewModel(
 
     private val propertiesLiveData: LiveData<List<Property>> = repository.properties.asLiveData()
 
-    private val _latitude = MutableLiveData<Double?>()
-    val latitude: LiveData<Double?>
-        get() = _latitude
-
-    private val _longitude = MutableLiveData<Double?>()
-    val longitude: LiveData<Double?>
-        get() = _longitude
-
-    fun updateCoordinatesFromAddress(address: String) {
-        viewModelScope.launch {
-            val (latitude, longitude) = repository.getCoordinatesFromAddress(address)
-            _latitude.value = latitude
-            _longitude.value = longitude
-        }
-    }
-
-    fun getCoordinatesText(): String {
-        val latitude = latitude.value
-        val longitude = longitude.value
-        return if (latitude != null && longitude != null) {
-            "Latitude: $latitude\nLongitude: $longitude"
-        } else {
-            "Coordinates not available"
-        }
-    }
-
     fun updateSelectedProperty(property: Property) {
         _selectedProperty.value = property
     }
 
     fun update(property: Property) {
-        executor.execute { viewModelScope.launch { repository.update(property) } }
+        executor.execute {
+            viewModelScope.launch {
+                val updatedProperty = updateCoordinatesFromAddress(property)
+                repository.update(updatedProperty)
+            }
+        }
     }
 
-    fun updateCoordinatesFromAddress(property: Property, address: String) {
-        viewModelScope.launch {
-            val (latitude, longitude) = repository.getCoordinatesFromAddress(address)
-            val updatedProperty = property.copy(latitude = latitude, longitude = longitude)
-            repository.update(updatedProperty)
+    private suspend fun updateCoordinatesFromAddress(property: Property): Property {
+        return withContext(Dispatchers.IO) {
+            val (latitude, longitude) = repository.getCoordinatesFromAddress(
+                "${property.address} ${property.postalCode} ${property.country}"
+            )
+            property.copy(latitude = latitude, longitude = longitude)
         }
     }
 
@@ -67,7 +49,8 @@ class RealEstateViewModel(
         executor.execute {
             viewModelScope.launch {
                 try {
-                    repository.invoke(property)
+                    val updatedProperty = updateCoordinatesFromAddress(property)
+                    repository.invoke(updatedProperty)
                     callback(true)
                 } catch (e: Exception) {
                     callback(false)
