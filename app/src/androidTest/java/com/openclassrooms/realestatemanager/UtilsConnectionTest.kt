@@ -39,22 +39,6 @@ class UtilsConnectionTest {
         )
 
     @Test
-    fun testConnectivity() {
-        //For test both possibility you can run the test one time with internet and one more time with no internet
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        val isConnected = Utils.isInternetAvailable(context)
-
-        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
-        onView(withText(R.string.map)).perform(click())
-
-        if (isConnected) {
-            onView(withId(R.id.map)).check(matches(isDisplayed()))
-        } else {
-            onView(withId(R.id.no_internet_image)).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
     fun testConnectivityWithInternet() {
         val context = mockk<Context>()
 
