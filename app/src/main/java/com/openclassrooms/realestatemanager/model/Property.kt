@@ -55,9 +55,9 @@ data class Property(
     @ColumnInfo(name = "photos")
     val photos: List<Photo>,
     @ColumnInfo(name = "latitude")
-    val latitude: Double?,
+    val latitude: Double? = 0.0,
     @ColumnInfo(name = "longitude")
-    val longitude: Double?,
+    val longitude: Double? = 0.0,
 ) : Parcelable {
     companion object : Parceler<Property> {
         override fun Property.write(parcel: Parcel, flags: Int) {
