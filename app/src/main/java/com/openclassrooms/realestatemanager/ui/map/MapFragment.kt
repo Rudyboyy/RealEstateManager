@@ -125,7 +125,7 @@ class MapFragment : Fragment(R.layout.map_fragment), OnMapReadyCallback {
         mapViewModel.userLocation.observe(viewLifecycleOwner) { location ->
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
         }
-        realEstateViewModel.filteredProperties.observe(viewLifecycleOwner) {
+        realEstateViewModel.propertiesLiveData.observe(viewLifecycleOwner) {
             for (property in it) {
                 setMarker(property)
             }

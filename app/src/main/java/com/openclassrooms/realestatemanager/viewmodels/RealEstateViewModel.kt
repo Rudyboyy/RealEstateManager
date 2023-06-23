@@ -3,10 +3,6 @@ package com.openclassrooms.realestatemanager.viewmodels
 import androidx.lifecycle.*
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.repository.RealEstateRepository
-import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_DATE_ASCENDING
-import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_DATE_DESCENDING
-import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_PRICE_ASCENDING
-import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_PRICE_DESCENDING
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,7 +17,7 @@ class RealEstateViewModel(
     val selectedProperty: LiveData<Property>
         get() = _selectedProperty
 
-    private val propertiesLiveData: LiveData<List<Property>> = repository.properties.asLiveData()
+    val propertiesLiveData: LiveData<List<Property>> = repository.properties.asLiveData()
 
     fun updateSelectedProperty(property: Property) {
         _selectedProperty.value = property
@@ -59,6 +55,31 @@ class RealEstateViewModel(
         }
     }
 
+    fun applyFilters(
+        minPrice: Int?,
+        maxPrice: Int?,
+        minSurface: Int?,
+        maxSurface: Int?,
+        minPhoto: Int?,
+        poiList: String,
+        sortingOption: List<String>?
+    ) {
+        viewModelScope.launch {
+            val properties = withContext(Dispatchers.IO) {
+                repository.getFilteredProperties(
+                    minPrice,
+                    maxPrice,
+                    minSurface,
+                    maxSurface,
+                    minPhoto,
+                    poiList,
+                    sortingOption
+                )
+            }
+            (propertiesLiveData as MutableLiveData<List<Property>>).value = properties
+        }
+    }
+
     private val _minPrice = MutableLiveData<Int>()
     val minPrice: LiveData<Int>
         get() = _minPrice
@@ -86,84 +107,6 @@ class RealEstateViewModel(
     private val _sortingOption = MutableLiveData<List<String>>()
     val sortingOption: LiveData<List<String>>
         get() = _sortingOption
-
-    val filteredProperties: LiveData<List<Property>> = MediatorLiveData<List<Property>>().apply {
-        var properties: List<Property>? = null
-        var minPrice: Int? = null
-        var maxPrice: Int? = null
-        var minSurface: Int? = null
-        var maxSurface: Int? = null
-        var minPhoto: Int? = null
-        var poiList: List<String>? = null
-
-        val updateFilteredList: () -> Unit = {
-            val filteredList = properties?.filter { property ->
-                val propertyPoints = property.pointOfInterest.split(", ")
-                val requiredPoints = poiList ?: emptyList()
-
-                requiredPoints.all { requiredPoint ->
-                    propertyPoints.any { propertyPoint ->
-                        propertyPoint == requiredPoint
-                    }
-                }
-                        && property.price >= (minPrice ?: 0)
-                        && property.price <= (maxPrice ?: Int.MAX_VALUE)
-                        && property.surface >= (minSurface ?: 0)
-                        && property.surface <= (maxSurface ?: Int.MAX_VALUE)
-                        && property.photos.size >= (minPhoto ?: 0)
-            }
-            val sortedList = filteredList?.toMutableList()
-
-            for (option in _sortingOption.value.orEmpty()) {
-                when (option) {
-                    SORT_BY_PRICE_ASCENDING -> sortedList?.sortBy { it.price }
-                    SORT_BY_PRICE_DESCENDING -> sortedList?.sortByDescending { it.price }
-                    SORT_BY_DATE_ASCENDING -> sortedList?.sortBy { it.entryDate }
-                    SORT_BY_DATE_DESCENDING -> sortedList?.sortByDescending { it.entryDate }
-                }
-            }
-            value = sortedList
-        }
-
-        addSource(propertiesLiveData) { prop ->
-            properties = prop
-            updateFilteredList()
-        }
-
-        addSource(_minPrice) { min ->
-            minPrice = min
-            updateFilteredList()
-        }
-
-        addSource(_maxPrice) { max ->
-            maxPrice = max
-            updateFilteredList()
-        }
-
-        addSource(_minSurface) { max ->
-            minSurface = max
-            updateFilteredList()
-        }
-
-        addSource(_maxSurface) { max ->
-            maxSurface = max
-            updateFilteredList()
-        }
-
-        addSource(_minPhoto) { min ->
-            minPhoto = min
-            updateFilteredList()
-        }
-
-        addSource(_poiList) { poi ->
-            poiList = poi
-            updateFilteredList()
-        }
-
-        addSource(_sortingOption) {
-            updateFilteredList()
-        }
-    }
 
     fun setPriceRange(minPrice: Int, maxPrice: Int) {
         _minPrice.value = minPrice

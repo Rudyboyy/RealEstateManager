@@ -5,11 +5,16 @@ import com.openclassrooms.realestatemanager.database.dao.PropertyDao
 import com.openclassrooms.realestatemanager.model.Property
 import com.openclassrooms.realestatemanager.service.GeocodingApiService
 import com.openclassrooms.realestatemanager.utils.Constants.MAPS_API_KEY
+import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_DATE_ASCENDING
+import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_DATE_DESCENDING
+import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_PRICE_ASCENDING
+import com.openclassrooms.realestatemanager.utils.Constants.SORT_BY_PRICE_DESCENDING
 import kotlinx.coroutines.flow.Flow
 
 class RealEstateRepository(
     private val propertyDao: PropertyDao,
-    private val geocodingApiService: GeocodingApiService) {
+    private val geocodingApiService: GeocodingApiService
+) {
 
     val properties: Flow<List<Property>> = propertyDao.getAllProperties()
 
@@ -34,4 +39,42 @@ class RealEstateRepository(
             Pair(null, null)
         }
     }
+
+    fun getFilteredProperties(
+        minPrice: Int?,
+        maxPrice: Int?,
+        minSurface: Int?,
+        maxSurface: Int?,
+        minPhoto: Int?,
+        poiList: String,
+        sortingOption: List<String>?
+    ): List<Property> {
+        val filteredProperties = propertyDao.getFilteredProperties(
+            minPrice,
+            maxPrice,
+            minSurface,
+            maxSurface,
+            poiList
+        )
+
+        val propertiesWithMinPhotos = filteredProperties.filter { property ->
+            property.photos.size >= (minPhoto ?: 0)
+        }
+
+        val sortedList = when {
+            sortingOption != null && sortingOption.isNotEmpty() -> {
+                when (sortingOption.first()) {
+                    SORT_BY_PRICE_ASCENDING -> propertiesWithMinPhotos.sortedBy { it.price }
+                    SORT_BY_PRICE_DESCENDING -> propertiesWithMinPhotos.sortedByDescending { it.price }
+                    SORT_BY_DATE_ASCENDING -> propertiesWithMinPhotos.sortedBy { it.entryDate }
+                    SORT_BY_DATE_DESCENDING -> propertiesWithMinPhotos.sortedByDescending { it.entryDate }
+                    else -> propertiesWithMinPhotos
+                }
+            }
+            else -> propertiesWithMinPhotos
+        }
+
+        return sortedList
+    }
+
 }

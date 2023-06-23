@@ -41,7 +41,7 @@ class PropertyListFragment : Fragment(R.layout.real_estates_list_fragment) {
             viewModel = viewModel
         )
         binding.realEstateRecyclerView.adapter = adapter
-        viewModel.filteredProperties.observe(viewLifecycleOwner) {
+        viewModel.propertiesLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
                 adapter.submitList(it)
                 setPropertyFromMap(adapter, it)

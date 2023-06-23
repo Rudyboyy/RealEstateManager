@@ -58,6 +58,15 @@ class FilterDialogFragment : DialogFragment() {
         viewModel.setMinPhoto(minPhoto)
         viewModel.setPoiList(poiList)
         viewModel.setSortingOption(selectedTags)
+        viewModel.applyFilters(
+            minPrice = minPrice,
+            maxPrice = maxPrice,
+            minSurface = minSurface,
+            maxSurface = maxSurface,
+            minPhoto = minPhoto,
+            poiList = poiList.joinToString(","),
+            sortingOption = selectedTags
+        )
     }
 
     private fun setFilter(binding: FilterDialogFragmentBinding) {
