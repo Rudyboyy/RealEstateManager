@@ -387,7 +387,7 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
         }
     }
 
-    @SuppressLint("UnspecifiedImmutableFlag")
+    @SuppressLint("NewApi")
     private fun sendVisualNotification(isSuccess: Boolean) {
         val contentText =
             if (isSuccess) getString(R.string.new_property_added) else getString(R.string.error_property_not_added)
@@ -396,8 +396,14 @@ class AddPropertyFragment : Fragment(R.layout.add_property_fragment) {
             val intent = Intent(requireContext(), MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
+            val flags = PendingIntent.FLAG_ONE_SHOT or
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        PendingIntent.FLAG_MUTABLE
+                    } else {
+                        PendingIntent.FLAG_IMMUTABLE
+                    }
             val pendingIntent =
-                PendingIntent.getActivity(requireContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT)
+                PendingIntent.getActivity(requireContext(), 0, intent, flags, null)
             val channelId: String = requireContext().getString(R.string.channel_id)
             val notificationBuilder: NotificationCompat.Builder =
                 NotificationCompat.Builder(requireContext(), channelId)

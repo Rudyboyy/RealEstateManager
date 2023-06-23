@@ -5,6 +5,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.net.NetworkInfo
+import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -46,11 +48,19 @@ class UtilsConnectionTest {
 
         every { context.getSystemService(Context.CONNECTIVITY_SERVICE) } returns connectivityManager
 
-        val network = mockk<Network>()
-        val networkCapabilities = mockk<NetworkCapabilities>()
-        every { connectivityManager.activeNetwork } returns network
-        every { connectivityManager.getNetworkCapabilities(network) } returns networkCapabilities
-        every { networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) } returns true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = mockk<Network>()
+            val networkCapabilities = mockk<NetworkCapabilities>()
+
+            every { connectivityManager.activeNetwork } returns network
+            every { connectivityManager.getNetworkCapabilities(network) } returns networkCapabilities
+            every { networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) } returns true
+        } else {
+            val networkInfo = mockk<NetworkInfo>()
+
+            every { connectivityManager.activeNetworkInfo } returns networkInfo
+            every { networkInfo.isConnected } returns true
+        }
 
         val isConnected = Utils.isInternetAvailable(context)
         assertTrue(isConnected)
@@ -64,11 +74,18 @@ class UtilsConnectionTest {
 
         every { context.getSystemService(Context.CONNECTIVITY_SERVICE) } returns connectivityManager
 
-        val network = mockk<Network>()
-        val networkCapabilities = mockk<NetworkCapabilities>()
-        every { connectivityManager.activeNetwork } returns network
-        every { connectivityManager.getNetworkCapabilities(network) } returns networkCapabilities
-        every { networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) } returns false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = mockk<Network>()
+            val networkCapabilities = mockk<NetworkCapabilities>()
+            every { connectivityManager.activeNetwork } returns network
+            every { connectivityManager.getNetworkCapabilities(network) } returns networkCapabilities
+            every { networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) } returns false
+        } else {
+            val networkInfo = mockk<NetworkInfo>()
+
+            every { connectivityManager.activeNetworkInfo } returns networkInfo
+            every { networkInfo.isConnected } returns false
+        }
 
         val isConnected = Utils.isInternetAvailable(context)
         assertFalse(isConnected)

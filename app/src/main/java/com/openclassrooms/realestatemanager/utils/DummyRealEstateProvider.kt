@@ -22,7 +22,7 @@ class DummyRealEstateProvider {
                 id = 1,
                 agent = "Bob Smith",
                 type = "House",
-                price = 350000.0,
+                price = 375000.0,
                 description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tristique nibh et interdum consequat. Sed consequat, tortor vel rutrum congue, arcu ligula viverra nisi, sed gravida justo nisi vitae lectus. Pellentesque vel nulla eu lectus ultricies viverra ac sit amet orci. Duis finibus laoreet volutpat. In rhoncus tempor orci, eu viverra risus pretium a. Duis aliquam pretium ligula vel dictum. Donec eu felis turpis. Pellentesque a risus tincidunt, placerat velit id, dapibus odio. Sed porta purus vel convallis pretium. Nunc id risus ante. Vivamus in hendrerit sem. Duis non mi et lectus luctus ullamcorper. Curabitur placerat mauris quis elit ultrices consequat. Sed et sapien velit.",
                 address = "123 Main St",
                 city = "Anytown",
@@ -54,6 +54,95 @@ class DummyRealEstateProvider {
                         description = "Kitchen",
                         uri = "https://images.unsplash.com/photo-1560440021-33f9b867899d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=659&q=80"
                     ),
+                    Photo(
+                        description = "Bedroom",
+                        uri = "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    )
+                )
+            ),
+            Property(
+                id = 5,
+                agent = "Bob Smith",
+                type = "House",
+                price = 630000.0,
+                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tristique nibh et interdum consequat. Sed consequat, tortor vel rutrum congue, arcu ligula viverra nisi, sed gravida justo nisi vitae lectus. Pellentesque vel nulla eu lectus ultricies viverra ac sit amet orci. Duis finibus laoreet volutpat. In rhoncus tempor orci, eu viverra risus pretium a. Duis aliquam pretium ligula vel dictum. Donec eu felis turpis. Pellentesque a risus tincidunt, placerat velit id, dapibus odio. Sed porta purus vel convallis pretium. Nunc id risus ante. Vivamus in hendrerit sem. Duis non mi et lectus luctus ullamcorper. Curabitur placerat mauris quis elit ultrices consequat. Sed et sapien velit.",
+                address = "123 Main St",
+                city = "Anytown",
+                postalCode = "14641",
+                country = "United states",
+                status = PropertyStatus.AVAILABLE,
+                numberOfRooms = 6,
+                numberOfBedrooms = 3,
+                numberOfBathrooms = 1,
+                surface = 150.0,
+                pointOfInterest = "School, Supermarket, Park",
+                entryDate = Date(System.currentTimeMillis()),
+                latitude = 48.8566,
+                longitude = 2.3522,
+                photos = listOf(
+                    Photo(
+                        description = "Bedroom",
+                        uri = "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    ),
+                    Photo(
+                        description = "Outside",
+                        uri = "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    ),
+                    Photo(
+                        description = "Lounge",
+                        uri = "https://images.unsplash.com/photo-1501183638710-841dd1904471?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                    ),
+                    Photo(
+                        description = "Stair",
+                        uri = "https://images.unsplash.com/photo-1501183638710-841dd1904471?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                    ),
+                    Photo(
+                        description = "Living room",
+                        uri = "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    ),
+                    Photo(
+                        description = "Kitchen",
+                        uri = "https://images.unsplash.com/photo-1560440021-33f9b867899d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=659&q=80"
+                    )
+                )
+            ),
+            Property(
+                id = 4,
+                agent = "Bob Smith",
+                type = "Loft",
+                price = 280000.0,
+                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tristique nibh et interdum consequat. Sed consequat, tortor vel rutrum congue, arcu ligula viverra nisi, sed gravida justo nisi vitae lectus. Pellentesque vel nulla eu lectus ultricies viverra ac sit amet orci. Duis finibus laoreet volutpat. In rhoncus tempor orci, eu viverra risus pretium a. Duis aliquam pretium ligula vel dictum. Donec eu felis turpis. Pellentesque a risus tincidunt, placerat velit id, dapibus odio. Sed porta purus vel convallis pretium. Nunc id risus ante. Vivamus in hendrerit sem. Duis non mi et lectus luctus ullamcorper. Curabitur placerat mauris quis elit ultrices consequat. Sed et sapien velit.",
+                address = "20 rue Royale",
+                city = "Orléans",
+                postalCode = "45000",
+                country = "France",
+                status = PropertyStatus.AVAILABLE,
+                numberOfRooms = 6,
+                numberOfBedrooms = 3,
+                numberOfBathrooms = 1,
+                surface = 150.0,
+                pointOfInterest = "Eatery, Supermarket, Park",
+                entryDate = Date(System.currentTimeMillis()),
+                latitude = 47.89903,
+                longitude = 1.904354,
+                photos = listOf(
+                    Photo(
+                        description = "Kitchen",
+                        uri = "https://images.unsplash.com/photo-1560440021-33f9b867899d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=659&q=80"
+                    ),
+                    Photo(
+                        description = "Outside",
+                        uri = "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    ),
+                    Photo(
+                        description = "Lounge",
+                        uri = "https://images.unsplash.com/photo-1501183638710-841dd1904471?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                    ),
+                    Photo(
+                        description = "Stair",
+                        uri = "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    ),
+
                     Photo(
                         description = "Bedroom",
                         uri = "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
@@ -106,7 +195,7 @@ class DummyRealEstateProvider {
                 id = 2,
                 agent = "Jane Doe",
                 type = "Flat",
-                price = 200000.0,
+                price = 235000.0,
                 description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tristique nibh et interdum consequat. Sed consequat, tortor vel rutrum congue, arcu ligula viverra nisi, sed gravida justo nisi vitae lectus. Pellentesque vel nulla eu lectus ultricies viverra ac sit amet orci. Duis finibus laoreet volutpat. In rhoncus tempor orci, eu viverra risus pretium a. Duis aliquam pretium ligula vel dictum. Donec eu felis turpis. Pellentesque a risus tincidunt, placerat velit id, dapibus odio. Sed porta purus vel convallis pretium. Nunc id risus ante. Vivamus in hendrerit sem. Duis non mi et lectus luctus ullamcorper. Curabitur placerat mauris quis elit ultrices consequat. Sed et sapien velit.",
                 address = "456 Oak St",
                 city = "Anytown",
