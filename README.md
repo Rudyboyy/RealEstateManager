@@ -17,7 +17,7 @@ It enables agents to efficiently store and manage properties for sale, create ne
 ### Demo
 ***
 
-https://github.com/Rudyboyy/RealEstateManager/assets/96139750/625a2304-28b3-4c47-92b2-7006f56f810f
+https://github.com/Rudyboyy/RealEstateManager/assets/96139750/a42a336f-1487-4173-ab3e-7a20e51f75e7
 
 #### Landscape
 
